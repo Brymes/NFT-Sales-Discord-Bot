@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func InitDb() *gorm.DB {
+func InitDb() {
 	var err error
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable",
 		os.Getenv("DB_HOST"),
@@ -18,10 +18,10 @@ func InitDb() *gorm.DB {
 		os.Getenv("DB_PORT"),
 	)
 
-	client, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DBClient, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println("Error Connecting to Database")
 		log.Fatal(err)
 	}
-	return client
+	return
 }
