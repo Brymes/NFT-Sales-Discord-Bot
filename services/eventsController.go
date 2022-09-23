@@ -22,12 +22,12 @@ func StartEventWS() {
 	return
 }
 
-func SalesController(event *NFTEvent) {
+func SalesController(event NFTEvent) {
 	go HandleSales(event)
 	go HandleAllSales(event)
 }
 
-func HandleSales(event *NFTEvent) {
+func HandleSales(event NFTEvent) {
 	config.ActiveSalesMux.RLock()
 	channels, match := config.ActiveSales[event.Response.NFT.NFTClass.Address]
 
@@ -41,7 +41,7 @@ func HandleSales(event *NFTEvent) {
 	config.ActiveSalesMux.RUnlock()
 }
 
-func HandleAllSales(event *NFTEvent) {
+func HandleAllSales(event NFTEvent) {
 	priceInEth := utils.ConvertDecimalsToEth(event.Response.Price, event.Response.Currency.Decimals)
 
 	config.ActiveAllSalesMux.RLock()
@@ -58,7 +58,7 @@ func HandleAllSales(event *NFTEvent) {
 
 }
 
-func SendSalesMessage(event *NFTEvent, channelID string) {
+func SendSalesMessage(event NFTEvent, channelID string) {
 	eventResponse := event.Response
 	priceInEth := fmt.Sprintf("%v", utils.ConvertDecimalsToEth(eventResponse.Price, eventResponse.Currency.Decimals))
 	marketPlaceLink := utils.GetMarketPlaceLink(eventResponse.Exchange, eventResponse.NFT.NFTClass.Address, eventResponse.NFT.TokenID)

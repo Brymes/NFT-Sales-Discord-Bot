@@ -96,7 +96,7 @@ func ConnectToService(logger *log.Logger) {
 					logger.Println("Error Unmarshalling to Struct")
 					logger.Println(err)
 				}
-				SalesController(&event)
+				SalesController(event)
 			}
 		}
 	}()
