@@ -1,18 +1,22 @@
 package bot
 
 import (
-	"fmt"
+	"DIA-NFT-Sales-Bot/config"
 	"github.com/bwmarrin/discordgo"
 	"log"
+	"os"
 )
 
-func InitBot(Token string) *discordgo.Session {
+func InitBot() {
+	token := os.Getenv("DISCORD_BOT_TOKEN")
+	if token == "" {
+		log.Fatalln("Bot Token environment variable not set")
+	}
 
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot " + Token)
+	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
-		fmt.Println("error creating Discord session,", err)
-		return nil
+		log.Fatalln("error creating Discord session,", err)
 	}
 
 	//Ensure Messages only come in from Guilds
@@ -29,6 +33,6 @@ func InitBot(Token string) *discordgo.Session {
 
 	RegisterCommands(dg)
 
-	return dg
-
+	config.DiscordBot = dg
+	return
 }
