@@ -53,4 +53,27 @@ func (subscription Subscriptions) DeactivateAllSubscriptions() {
 	}
 }
 
+func (subscription Subscriptions) UnsubscribeChannelSalesUpdates() {
+	var result *gorm.DB
+
+	if subscription.Address.Valid == false {
+		result = config.DBClient.Model(&subscription).Where("command = ? AND channel_id = ? AND threshold = ?", subscription.Command, subscription.ChannelID.String, subscription.Threshold).Update("is_active", false)
+	} else {
+		result = config.DBClient.Model(&subscription).Where("command = ? AND channel_id = ? AND address = ?", subscription.Command, subscription.ChannelID.String, subscription.Address.String).Update("is_active", false)
+	}
+	if result.Error != nil {
+		err := "Error Deactivating Channel Sales Subscriptions : \n" + result.Error.Error()
+		panic(err)
+	}
+}
+
+func (subscription Subscriptions) UnsubscribeSalesUpdates() {
+
+	result := config.DBClient.Model(&subscription).Where("command = ?", subscription.Command).Update("is_active", false)
+	if result.Error != nil {
+		err := "Error Deactivating Channel Subscriptions : \n" + result.Error.Error()
+		panic(err)
+	}
+}
+
 func LoadAllSubscriptions() {}

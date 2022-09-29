@@ -38,7 +38,7 @@ func HandleSales(event NFTEvent) {
 			go SendSalesMessage(event, channel)
 		}
 	}
-	config.ActiveSalesMux.RUnlock()
+	defer config.ActiveSalesMux.RUnlock()
 }
 
 func HandleAllSales(event NFTEvent) {
@@ -54,7 +54,7 @@ func HandleAllSales(event NFTEvent) {
 		}
 	}
 
-	config.ActiveAllSalesMux.RUnlock()
+	defer config.ActiveAllSalesMux.RUnlock()
 
 }
 
@@ -68,7 +68,7 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 		Author:      &discordgo.MessageEmbedAuthor{},
 		Color:       0x5f3267,
 		Title:       title,
-		Description: "This is a discordgo embed",
+		Description: "NFT Discord Bot Sales Notification",
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
 				Name:   "Collection Name",
