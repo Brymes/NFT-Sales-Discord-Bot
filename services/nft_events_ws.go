@@ -2,6 +2,7 @@ package services
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -43,6 +44,8 @@ type NFTEvent struct {
 }
 
 func ConnectToService(logger *log.Logger) {
+	var ctx context.Context
+	ctx, config.NftEventWSCancelFunc = context.WithCancel(context.Background())
 
 	u := url.URL{Scheme: "wss", Host: "api.diadata.org", Path: "/ws/nft"}
 
@@ -83,7 +86,6 @@ func ConnectToService(logger *log.Logger) {
 
 			case "alive":
 				config.ActiveNftEventWS = true
-				break
 			case "subscibed to nftsales":
 				config.ActiveNftEventWS = true
 			default:
@@ -105,6 +107,9 @@ func ConnectToService(logger *log.Logger) {
 	defer ticker.Stop()
 	for {
 		select {
+		case <-ctx.Done(): // 2. "ctx" is cancelled, we close "ch"
+			config.ActiveNftEventWS = false
+			return
 		case <-done:
 			config.ActiveNftEventWS = false
 			return
