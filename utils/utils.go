@@ -46,3 +46,21 @@ func HandlePanic(logger *log.Logger, customMessage string) {
 		}
 	}
 }
+
+func RemoveArrayDuplicates(arr []string) []string {
+	occurred := map[string]bool{}
+	result := []string{}
+	for e := range arr {
+
+		// check if already the mapped
+		// variable is set to true or not
+		if occurred[arr[e]] != true {
+			occurred[arr[e]] = true
+
+			// Append to result slice.
+			result = append(result, arr[e])
+		}
+	}
+
+	return result
+}

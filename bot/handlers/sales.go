@@ -4,6 +4,7 @@ import (
 	"DIA-NFT-Sales-Bot/config"
 	"DIA-NFT-Sales-Bot/models"
 	"DIA-NFT-Sales-Bot/services"
+	"DIA-NFT-Sales-Bot/utils"
 	"database/sql"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
@@ -43,7 +44,9 @@ func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	//Add Details to AllSales[ChannelID]
 	config.ActiveSalesMux.Lock()
 
-	config.ActiveSales[address] = append(config.ActiveSales[address], channel.ID)
+	subscribedChannels := config.ActiveSales[address]
+	subscribedChannels = append(subscribedChannels, channel.ID)
+	config.ActiveSales[address] = utils.RemoveArrayDuplicates(subscribedChannels)
 
 	config.ActiveSalesMux.Unlock()
 

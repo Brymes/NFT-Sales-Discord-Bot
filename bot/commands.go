@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	ContractAddressMinLength = 4
+	ContractAddressMinLength = 42
 	RegisteredCommands       []*discordgo.ApplicationCommand
 	TextChannelType          = []discordgo.ChannelType{
 		discordgo.ChannelTypeGuildText,
