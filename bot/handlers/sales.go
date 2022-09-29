@@ -48,7 +48,7 @@ func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	subscribedChannels = append(subscribedChannels, channel.ID)
 	config.ActiveSales[address] = utils.RemoveArrayDuplicates(subscribedChannels)
 
-	config.ActiveSalesMux.Unlock()
+	defer config.ActiveSalesMux.Unlock()
 
 	//Follow Up has been Set up
 	SendChannelSetupFollowUp("Channel setup complete & successful", discordSession, interaction)

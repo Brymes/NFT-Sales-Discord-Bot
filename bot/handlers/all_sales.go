@@ -58,7 +58,7 @@ func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.I
 
 	sort.Float64s(config.ActiveAllSalesKeys)
 
-	config.ActiveAllSalesMux.Unlock()
+	defer config.ActiveAllSalesMux.Unlock()
 
 	//Follow Up has been Set up
 	SendChannelSetupFollowUp("Channel setup complete & successful", discordSession, interaction)
