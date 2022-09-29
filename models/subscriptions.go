@@ -37,4 +37,20 @@ func (subscription Subscriptions) LoadChannelSubscriptions() []Subscriptions {
 	return subscriptions
 }
 
+func (subscription Subscriptions) DeactivateChannelSubscriptions() {
+	result := config.DBClient.Model(&subscription).Where("is_active = ? AND channel_id = ?", true, subscription.ChannelID.String).Update("is_active", false)
+	if result.Error != nil {
+		err := "Error Deactivating Channel Subscriptions : \n" + result.Error.Error()
+		panic(err)
+	}
+}
+
+func (subscription Subscriptions) DeactivateAllSubscriptions() {
+	result := config.DBClient.Model(&subscription).Where("is_active = ?", true).Update("is_active", false)
+	if result.Error != nil {
+		err := "Error Deactivating All Subscriptions : \n" + result.Error.Error()
+		panic(err)
+	}
+}
+
 func LoadAllSubscriptions() {}

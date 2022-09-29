@@ -40,6 +40,7 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 				}
 			}
 		}
+		go sub.DeactivateChannelSubscriptions()
 	} else {
 		go models.Subscriptions{}.DeactivateAllSubscriptions()
 		// Delete Global variables
