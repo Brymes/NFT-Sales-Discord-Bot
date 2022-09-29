@@ -1,17 +1,18 @@
 module DIA-NFT-Sales-Bot
 
-go 1.17
+go 1.18
 
 require (
 	github.com/bwmarrin/discordgo v0.26.1
+	github.com/gorilla/websocket v1.4.2
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sirupsen/logrus v1.9.0
+	golang.org/x/exp v0.0.0-20220921164117-439092de6870
 	gorm.io/driver/postgres v1.3.9
 	gorm.io/gorm v1.23.9
 )
 
 require (
-	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -24,6 +25,6 @@ require (
 	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
