@@ -2,9 +2,9 @@ package services
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	"DIA-NFT-Sales-Bot/utils"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/url"
@@ -70,44 +70,52 @@ func ConnectToService(logger *log.Logger) {
 
 	done := make(chan struct{})
 
-	go func() {
+	go func(ctx2 context.Context) {
 		defer close(done)
+		defer utils.HandlePanic(config.DiscordBot, "Error in WebSocket")
 		for {
-			event, jsonPayload := NFTEvent{}, map[string]interface{}{}
-
-			err = c.ReadJSON(&jsonPayload)
-			if err != nil {
-				logger.Println("Error Reading response", err)
-			}
-
-			check := jsonPayload["Response"]
-
-			switch check {
-
-			case "alive":
-				config.ActiveNftEventWS = true
-			case "subscibed to nftsales":
-				config.ActiveNftEventWS = true
+			select {
+			case <-ctx2.Done():
+				log.Println("Websocket stopped")
+				return
 			default:
-				// convert map to json
-				jsonString, _ := json.Marshal(jsonPayload)
-				fmt.Println(string(jsonString))
-				// convert json to struct
-				err := json.Unmarshal(jsonString, &event)
+				event, jsonPayload := NFTEvent{}, map[string]interface{}{}
+
+				err = c.ReadJSON(&jsonPayload)
 				if err != nil {
-					logger.Println("Error Unmarshalling to Struct")
-					logger.Println(err)
+					logger.Println("Error Reading response", err)
 				}
-				SalesController(event)
+
+				check := jsonPayload["Response"]
+
+				switch check {
+
+				case "alive":
+					config.ActiveNftEventWS = true
+				case "subscribed to nftsales":
+					config.ActiveNftEventWS = true
+				default:
+					// convert map to json
+					jsonString, _ := json.Marshal(jsonPayload)
+					//fmt.Println(string(jsonString))
+					// convert json to struct
+					err := json.Unmarshal(jsonString, &event)
+					if err != nil {
+						logger.Println("Error Unmarshalling to Struct")
+						logger.Println(err)
+					}
+					SalesController(event)
+				}
 			}
 		}
-	}()
+	}(ctx)
 
-	ticker := time.NewTicker(30 * time.Second)
+	ticker := time.NewTicker(7 * time.Second)
 	defer ticker.Stop()
 	for {
 		select {
-		case <-ctx.Done(): // 2. "ctx" is cancelled, we close "ch"
+		case <-ctx.Done():
+			log.Println("Websocket stopped")
 			config.ActiveNftEventWS = false
 			return
 		case <-done:
