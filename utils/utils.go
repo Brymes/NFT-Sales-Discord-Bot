@@ -2,9 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"log"
 	"math"
-	"runtime/debug"
 	"strings"
 )
 
@@ -32,19 +30,6 @@ func ConvertDecimalsToEth(price int64, decimals int) float64 {
 	res := math.Pow(10, float64(decimals))
 	priceInEth := float64(price) / res
 	return priceInEth
-}
-
-func HandlePanic(logger *log.Logger, customMessage string) {
-	//Notify Admin of any uncaught errors
-	if err := recover(); err != nil {
-		logger.Println(err)
-
-		if customMessage != "" {
-			logger.Println(customMessage)
-		} else {
-			logger.Println(string(debug.Stack()))
-		}
-	}
 }
 
 func RemoveArrayDuplicates(arr []string) []string {
