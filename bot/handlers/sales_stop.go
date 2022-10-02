@@ -5,6 +5,7 @@ import (
 	"DIA-NFT-Sales-Bot/models"
 	"database/sql"
 	"fmt"
+
 	"github.com/bwmarrin/discordgo"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
@@ -12,10 +13,12 @@ import (
 
 func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	var (
-		message               string
-		optionsMap            = ParseCommandOptions(interaction)
-		subs                  = models.Subscriptions{Command: "sales"}
-		address, channel, all = optionsMap["address"].StringValue(), optionsMap["channel"].ChannelValue(nil), optionsMap["all"].BoolValue()
+		message             string
+		optionsMap          = ParseCommandOptions(interaction)
+		subs                = models.Subscriptions{Command: "sales"}
+		address, addrExists = optionsMap["address"]
+		channel, chanExists = optionsMap["channel"]
+		all                 = optionsMap["all"].BoolValue()
 	)
 	config.ActiveSalesMux.Lock()
 
@@ -27,21 +30,27 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 		go subs.UnsubscribeSalesUpdates()
 
 	} else {
-		subs.ChannelID, subs.Address = sql.NullString{String: channel.ID, Valid: true}, sql.NullString{String: address, Valid: true}
-		go subs.UnsubscribeChannelSalesUpdates()
+		if !addrExists || chanExists {
+			message = "Invalid Channel or Address supplied"
+		} else {
+			channelID := channel.ChannelValue(discordSession).ID
 
-		go func() {
-			subscribedChannels := config.ActiveSales[address]
-			for index, c := range subscribedChannels {
-				if c == channel.ID {
-					subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
-					config.ActiveSales[address] = subscribedChannels
-					break
+			subs.ChannelID, subs.Address = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: address.StringValue(), Valid: true}
+			go subs.UnsubscribeChannelSalesUpdates()
+
+			go func() {
+				subscribedChannels := config.ActiveSales[address.StringValue()]
+				for index, c := range subscribedChannels {
+					if c == channelID {
+						subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
+						config.ActiveSales[address.StringValue()] = subscribedChannels
+						break
+					}
 				}
-			}
-		}()
+			}()
 
-		message = fmt.Sprintf("Deactivate Sales Subscription for Contract Address : %s  on Channel: %s", address, channel.Name)
+			message = fmt.Sprintf("Deactivate Sales Subscription for Contract Address : %s  on Channel: %s", address.StringValue(), channel.Name)
+		}
 	}
 	defer config.ActiveSalesMux.Unlock()
 
