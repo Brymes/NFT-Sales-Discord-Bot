@@ -14,7 +14,7 @@ import (
 func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	channel, threshold := optionsMap["channel"].ChannelValue(nil), optionsMap["threshold"].FloatValue()
+	channel, threshold := optionsMap["channel"].ChannelValue(discordSession), optionsMap["threshold"].FloatValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Setup Channel:%s \t to receive updates for Contract Address: %v", channel.Name, threshold)

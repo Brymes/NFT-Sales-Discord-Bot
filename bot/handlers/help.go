@@ -25,7 +25,7 @@ var (
 func formatHelpText() string {
 	str := &strings.Builder{}
 	table := tablewriter.NewWriter(str)
-	table.SetHeader([]string{"Command", "Desc"})
+	table.SetHeader([]string{"Help", "Message"})
 	table.AppendBulk(helpArray)
 	table.SetBorder(true)
 	table.SetRowLine(true)
