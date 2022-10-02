@@ -28,7 +28,7 @@ func (subscription Subscriptions) SaveSubscription() {
 func (subscription Subscriptions) LoadChannelSubscriptions() []Subscriptions {
 	var subscriptions []Subscriptions
 
-	result := config.DBClient.Model(&subscription).Where("is_active = ? AND channel_id = ?", true, subscription.ChannelID.String).Find(subscriptions)
+	result := config.DBClient.Model(&subscription).Where("is_active = ? AND channel_id = ?", true, subscription.ChannelID.String).Find(&subscriptions)
 	if result.Error != nil {
 		err := "Error Fetching Subscriptions by Channel: \n" + result.Error.Error()
 		panic(err)
@@ -76,4 +76,14 @@ func (subscription Subscriptions) UnsubscribeSalesUpdates() {
 	}
 }
 
-func LoadAllSubscriptions() {}
+func (subscription Subscriptions) LoadAllSubscriptions() []Subscriptions {
+	var subscriptions []Subscriptions
+
+	result := config.DBClient.Model(Subscriptions{}).Where("is_active = ?", true).Find(&subscriptions)
+	if result.Error != nil {
+		err := "Error Fetching Subscriptions by Channel: \n" + result.Error.Error()
+		panic(err)
+	}
+
+	return subscriptions
+}
