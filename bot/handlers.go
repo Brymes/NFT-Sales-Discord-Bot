@@ -2,12 +2,21 @@ package bot
 
 import (
 	"DIA-NFT-Sales-Bot/bot/handlers"
+	"DIA-NFT-Sales-Bot/utils"
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 )
 
 var (
 	SlashCommands = map[string]func(*discordgo.Session, *discordgo.InteractionCreate){
-		"help": handlers.HelpHandler,
+		"help":           handlers.HelpHandler,
+		"subscriptions":  handlers.SubscriptionsHandler,
+		"sales":          handlers.SalesHandler,
+		"sales_stop":     handlers.SalesStopHandler,
+		"floor":          handlers.FloorHandler,
+		"all_sales":      handlers.AllSalesHandler,
+		"all_sales_stop": handlers.AllSalesStopHandler,
+		"stop_all":       handlers.StopAllHandler,
 	}
 )
 
@@ -39,6 +48,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func slashCommandHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
+	defer utils.HandlePanic(discordSession, fmt.Sprintf("Error Handling command %s", interaction.ApplicationCommandData().Name))
+
 	if handler, ok := SlashCommands[interaction.ApplicationCommandData().Name]; ok {
 		handler(discordSession, interaction)
 	} else {

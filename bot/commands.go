@@ -33,7 +33,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 		{
 			Name:        "sales",
-			Description: "Allow to set-up a channel that feeds all NFT collection sales matching the supplied contract address from the DIA NFT Event WebSocket to a selected discord channel",
+			Description: "SetUp bot to feeds NFT sales for set contract address from DIA NFT WebSocket to selected channel",
 			Options: []*discordgo.ApplicationCommandOption{
 
 				{
@@ -56,7 +56,12 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			Name:        "sales_stop",
 			Description: "Stops Bot from pushing sales update from a contract address or stop all bots",
 			Options: []*discordgo.ApplicationCommandOption{
-
+				{
+					Type:        discordgo.ApplicationCommandOptionBoolean,
+					Name:        "all",
+					Description: "Select True to stop all sales bots",
+					Required:    true,
+				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "address",
@@ -70,12 +75,6 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Description:  "Channel to stop updating",
 					ChannelTypes: TextChannelType,
 					Required:     false,
-				},
-				{
-					Type:        discordgo.ApplicationCommandOptionBoolean,
-					Name:        "all",
-					Description: "Select True to stop all sales bots",
-					Required:    true,
 				},
 			},
 		},
@@ -117,6 +116,12 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			Description: "Stop bot for all sales above the predetermined threshold and contract address",
 			Options: []*discordgo.ApplicationCommandOption{
 				{
+					Type:        discordgo.ApplicationCommandOptionBoolean,
+					Name:        "all",
+					Description: "Select True to stop all threshold bots",
+					Required:    true,
+				},
+				{
 					Type:        discordgo.ApplicationCommandOptionNumber,
 					Name:        "threshold",
 					Description: "Threshold in ETH up to 2 decimals e.g 4.55",
@@ -128,12 +133,6 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     false,
-				},
-				{
-					Type:        discordgo.ApplicationCommandOptionBoolean,
-					Name:        "all",
-					Description: "Select True to stop all threshold bots",
-					Required:    true,
 				},
 			},
 		},
