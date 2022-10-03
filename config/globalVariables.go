@@ -14,15 +14,21 @@ var (
 
 	// ActiveSales Maps Address to A List of channels
 	ActiveSales    = map[string][]string{}
-	ActiveSalesMux = &sync.RWMutex{}
+	ActiveSalesMux = &sync.Mutex{}
 
 	// ActiveAllSales Maps Threshold to A List of Channels
 	ActiveAllSales     = map[float64][]string{}
 	ActiveAllSalesKeys []float64
-	ActiveAllSalesMux  = &sync.RWMutex{}
+	ActiveAllSalesMux  = &sync.Mutex{}
 
 	ActiveNftEventWS     = false
 	NftEventWSCancelFunc context.CancelFunc
 
 	PanicChannelID string
 )
+
+func ShutDownWS() {
+	if ActiveNftEventWS {
+		NftEventWSCancelFunc()
+	}
+}

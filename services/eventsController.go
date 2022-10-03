@@ -5,6 +5,7 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"log"
 	"strings"
 	"time"
 )
@@ -15,9 +16,10 @@ func StartEventWS() {
 	reqBuffer, logger := config.InitRequestLogger("NftEvents")
 
 	defer WSLogger.Printf("\n%v\n", reqBuffer)
-	defer utils.HandlePanic(logger, "")
+	defer utils.HandlePanic(config.DiscordBot, "Error from Websocket")
 
 	// Use Cancel Func to kill this
+	log.Println("Websocket Service running")
 	go ConnectToService(logger)
 	return
 }
@@ -28,8 +30,12 @@ func SalesController(event NFTEvent) {
 }
 
 func HandleSales(event NFTEvent) {
-	config.ActiveSalesMux.RLock()
+	// This Handle panic is useful for if all bots are stopped and arrays/maps have been emptied
+	defer utils.HandlePanic(config.DiscordBot, "Error in Sales Handler")
+
+	config.ActiveSalesMux.Lock()
 	channels, match := config.ActiveSales[event.Response.NFT.NFTClass.Address]
+	config.ActiveSalesMux.Unlock()
 
 	if !match {
 		return
@@ -38,13 +44,14 @@ func HandleSales(event NFTEvent) {
 			go SendSalesMessage(event, channel)
 		}
 	}
-	defer config.ActiveSalesMux.RUnlock()
 }
 
 func HandleAllSales(event NFTEvent) {
+	// This Handle panic is useful for if all bots are stopped and arrays/maps have been emptied
+	defer utils.HandlePanic(config.DiscordBot, "Error in All Sales Handler")
 	priceInEth := utils.ConvertDecimalsToEth(event.Response.Price, event.Response.Currency.Decimals)
 
-	config.ActiveAllSalesMux.RLock()
+	config.ActiveAllSalesMux.Lock()
 
 	for _, elem := range config.ActiveAllSalesKeys {
 		if priceInEth > elem {
@@ -53,12 +60,11 @@ func HandleAllSales(event NFTEvent) {
 			}
 		}
 	}
-
-	defer config.ActiveAllSalesMux.RUnlock()
-
+	config.ActiveAllSalesMux.Unlock()
 }
 
 func SendSalesMessage(event NFTEvent, channelID string) {
+	defer utils.HandlePanic(config.DiscordBot, "Error Sending sales event")
 	eventResponse := event.Response
 	priceInEth := fmt.Sprintf("%v", utils.ConvertDecimalsToEth(eventResponse.Price, eventResponse.Currency.Decimals))
 	marketPlaceLink := utils.GetMarketPlaceLink(eventResponse.Exchange, eventResponse.NFT.NFTClass.Address, eventResponse.NFT.TokenID)
@@ -108,4 +114,5 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 	if err != nil {
 		panic(err)
 	}
+
 }
