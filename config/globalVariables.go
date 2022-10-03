@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/bwmarrin/discordgo"
 	"gorm.io/gorm"
+	"os"
 	"sync"
 )
 
@@ -24,11 +25,22 @@ var (
 	ActiveNftEventWS     = false
 	NftEventWSCancelFunc context.CancelFunc
 
+	// PanicChannelID Variable to Hold ChannelID to forward all errors
 	PanicChannelID string
 )
 
 func ShutDownWS() {
 	if ActiveNftEventWS {
 		NftEventWSCancelFunc()
+	}
+}
+
+func InitPanicChannel() {
+	channel := os.Getenv("PANIC_CHANNEL")
+
+	if channel == "" {
+		PanicChannelID = "1025726821733515314"
+	} else {
+		PanicChannelID = channel
 	}
 }

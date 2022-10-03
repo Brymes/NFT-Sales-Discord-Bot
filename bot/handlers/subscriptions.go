@@ -9,8 +9,6 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-var ()
-
 // Note: could remove SetBorder and SetRowLine if char count needs to be reduced
 func formatSubscriptionsText(subsArray [][]string) string {
 	str := &strings.Builder{}
@@ -37,7 +35,7 @@ func SubscriptionsHandler(discordSession *discordgo.Session, interaction *discor
 	if err != nil {
 		panic(err)
 	}
-	subsArray := [][]string{}
+	var subsArray [][]string
 
 	subscriptions := models.Subscriptions{}.LoadAllSubscriptions()
 

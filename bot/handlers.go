@@ -31,6 +31,7 @@ func RegisterHandlers(discordSession *discordgo.Session) {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the authenticated bot has access to.
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+	defer utils.HandlePanic(s, fmt.Sprintf("Error Handling message %v", m.Content))
 
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == s.State.User.ID {
@@ -39,9 +40,15 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	switch m.Content {
 	case "ping":
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
+		_, err := s.ChannelMessageSend(m.ChannelID, "Pong!")
+		if err != nil {
+			panic(err)
+		}
 	case "pong":
-		s.ChannelMessageSend(m.ChannelID, "Ping!")
+		_, err := s.ChannelMessageSend(m.ChannelID, "Ping!")
+		if err != nil {
+			panic(err)
+		}
 	default:
 		handlers.SendHelpText(s, m)
 	}

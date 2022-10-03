@@ -58,7 +58,7 @@ func ConnectToService(logger *log.Logger) {
 		logger.Fatal("dial:", err)
 	}
 
-	//When the program closes close the connection
+	//When the program closes the connection
 	defer c.Close()
 
 	err = c.WriteJSON(map[string]string{"Channel": "nftsales"})

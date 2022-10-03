@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-var CentralLogger *logrus.Logger
-
 func CreateServiceLogger(fileName string) *logrus.Logger {
 	logger := logrus.New()
 	logger.SetFormatter(&logrus.JSONFormatter{})
@@ -26,7 +24,7 @@ func CreateServiceLogger(fileName string) *logrus.Logger {
 func InitRequestLogger(service string) (*bytes.Buffer, *log.Logger) {
 	b := &bytes.Buffer{}
 	prefix := fmt.Sprintf("%v: ", strings.ToUpper(service))
-	reqlogger := log.New(b, prefix, log.Ltime|log.Lshortfile)
+	reqLogger := log.New(b, prefix, log.Ltime|log.Lshortfile)
 
-	return b, reqlogger
+	return b, reqLogger
 }

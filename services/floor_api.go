@@ -46,13 +46,13 @@ func FloorPriceAPI(contractAddress string) (response Floor) {
 		switch key {
 
 		case "volume":
-			bodyCloser, body = MakeRequestÏ(url)
+			bodyCloser, body = MakeRequest(url)
 			err = json.Unmarshal(body, &response.Volume)
 		case "movingAverage":
-			bodyCloser, body = MakeRequestÏ(url)
+			bodyCloser, body = MakeRequest(url)
 			err = json.Unmarshal(body, &response.MA)
 		case "floorPrice":
-			bodyCloser, body = MakeRequestÏ(url)
+			bodyCloser, body = MakeRequest(url)
 			err = json.Unmarshal(body, &response.FloorPrice)
 		}
 		bodyCloser.Close()
@@ -65,7 +65,7 @@ func FloorPriceAPI(contractAddress string) (response Floor) {
 	return response
 }
 
-func MakeRequestÏ(url string) (io.ReadCloser, []byte) {
+func MakeRequest(url string) (io.ReadCloser, []byte) {
 	var (
 		errorRes error
 		method   = "GET"

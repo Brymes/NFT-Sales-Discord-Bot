@@ -13,6 +13,7 @@ import (
 )
 
 func init() {
+	config.InitPanicChannel()
 	config.InitDb()
 	models.InitMigrations()
 	startWS := models.LoadCurrentSubscriptions()

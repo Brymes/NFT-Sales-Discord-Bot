@@ -10,7 +10,7 @@ import (
 
 func InitDb() {
 	var err error
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable",
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=require",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USERNAME"),
 		os.Getenv("DB_PASSWORD"),
@@ -20,8 +20,7 @@ func InitDb() {
 
 	DBClient, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Println("Error Connecting to Database")
+		log.Println("Error Connecting to Database. Kindly set accurate Database environment variables")
 		log.Fatal(err)
 	}
-	return
 }

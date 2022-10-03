@@ -10,7 +10,7 @@ import (
 func InitBot() {
 	token := os.Getenv("DISCORD_BOT_TOKEN")
 	if token == "" {
-		log.Fatalln("Bot Token environment variable not set")
+		log.Fatalln("DISCORD_BOT_TOKEN environment variable not set")
 	}
 
 	// Create a new Discord session using the provided bot token.
@@ -34,5 +34,5 @@ func InitBot() {
 	RegisterCommands(dg)
 
 	config.DiscordBot = dg
-	return
+
 }

@@ -76,31 +76,31 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 		Title:       title,
 		Description: "NFT Discord Bot Sales Notification",
 		Fields: []*discordgo.MessageEmbedField{
-			&discordgo.MessageEmbedField{
+			{
 				Name:   "Collection Name",
 				Value:  marketPlaceLink,
 				Inline: false,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Seller Address",
 				Value:  utils.GetEtherScanLink("address", eventResponse.FromAddress),
 				Inline: true,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Buyer Address",
 				Value:  utils.GetEtherScanLink("address", eventResponse.ToAddress),
 				Inline: true,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Price In Eth",
 				Value:  priceInEth,
 				Inline: true,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "MarketPlace",
 				Value:  eventResponse.Exchange,
 				Inline: true,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Time of Sale",
 				Value:  eventResponse.Timestamp.Format(time.RFC3339),
 				Inline: true,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "TxHash",
 				Value:  utils.GetEtherScanLink("transaction", eventResponse.TxHash),
 				Inline: true,

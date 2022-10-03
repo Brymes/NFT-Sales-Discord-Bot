@@ -49,5 +49,8 @@ func HelpHandler(discordSession *discordgo.Session, interaction *discordgo.Inter
 }
 
 func SendHelpText(discordSession *discordgo.Session, message *discordgo.MessageCreate) {
-	discordSession.ChannelMessageSend(message.ChannelID, HelpText)
+	_, err := discordSession.ChannelMessageSend(message.ChannelID, HelpText)
+	if err != nil {
+		panic(err)
+	}
 }

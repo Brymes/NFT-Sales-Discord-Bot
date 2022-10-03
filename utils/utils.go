@@ -34,7 +34,8 @@ func ConvertDecimalsToEth(price int64, decimals int) float64 {
 
 func RemoveArrayDuplicates(arr []string) []string {
 	occurred := map[string]bool{}
-	result := []string{}
+	var result []string
+
 	for e := range arr {
 
 		// check if already the mapped

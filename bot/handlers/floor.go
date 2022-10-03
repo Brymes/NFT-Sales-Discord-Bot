@@ -47,23 +47,23 @@ func createFloorMessage(payload services.Floor) *discordgo.MessageEmbed {
 		Title:       title,
 		Description: "NFT Discord Bot Floor Price Response",
 		Fields: []*discordgo.MessageEmbedField{
-			&discordgo.MessageEmbedField{
+			{
 				Name:   "Collection Name",
 				Value:  payload.Volume.Collection,
 				Inline: false,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Collection Address",
 				Value:  etherScanLink,
 				Inline: true,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Floor Price",
 				Value:  fmt.Sprintf("%f ETH", payload.FloorPrice.FloorPrice),
 				Inline: false,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "Moving Average Floor Price",
 				Value:  fmt.Sprintf("%f ETH", payload.FloorPrice.FloorPrice),
 				Inline: false,
-			}, &discordgo.MessageEmbedField{
+			}, {
 				Name:   "24h Volume",
 				Value:  fmt.Sprintf("%f ETH", payload.Volume.Volume),
 				Inline: false,

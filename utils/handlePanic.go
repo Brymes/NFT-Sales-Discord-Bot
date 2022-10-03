@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"DIA-NFT-Sales-Bot/config"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/olekukonko/tablewriter"
@@ -20,7 +21,10 @@ func sendPanicMessage(panicTable [][]string, discordSession *discordgo.Session) 
 	table.Render()
 	msg := "```" + str.String() + "```"
 
-	discordSession.ChannelMessageSend("1025726821733515314", msg)
+	_, err := discordSession.ChannelMessageSend(config.PanicChannelID, msg)
+	if err != nil {
+		log.Println("Error Sending Panic message")
+	}
 
 }
 
