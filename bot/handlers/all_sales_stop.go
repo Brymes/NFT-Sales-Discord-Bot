@@ -49,7 +49,7 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 				}
 			}()
 
-			message = fmt.Sprintf("Deactivate AllSales Subscription for Threshold : %f ETH  on Channel: %s", threshold.FloatValue(), channel.Name)
+			message = fmt.Sprintf("Deactivated AllSales Subscription for Threshold : %f ETH  on Channel: %s", threshold.FloatValue(), channel.Name)
 		}
 	}
 	defer config.ActiveAllSalesMux.Unlock()

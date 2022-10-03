@@ -15,7 +15,7 @@ func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	address := optionsMap["address"].StringValue()
 
 	//Respond Channel is being Setup
-	message := fmt.Sprintf("Get Floor Price for Collection:%s ", utils.GetEtherScanLink("address", address))
+	message := fmt.Sprintf("Get Floor Price for Collection: %s ", utils.GetEtherScanLink("address", address))
 	err := discordSession.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
@@ -39,7 +39,7 @@ func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 func createFloorMessage(payload services.Floor) *discordgo.MessageEmbed {
 	etherScanLink := utils.GetEtherScanLink("address", payload.Volume.Address)
 
-	title := fmt.Sprintf("Floor Price of %s is  %s", payload.Volume.Collection, payload.FloorPrice.FloorPrice)
+	title := fmt.Sprintf("Floor Price of %s is  %f ETH", payload.Volume.Collection, payload.FloorPrice.FloorPrice)
 
 	embed := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},
@@ -57,16 +57,16 @@ func createFloorMessage(payload services.Floor) *discordgo.MessageEmbed {
 				Inline: true,
 			}, &discordgo.MessageEmbedField{
 				Name:   "Floor Price",
-				Value:  fmt.Sprintf("%f", payload.FloorPrice.FloorPrice),
-				Inline: true,
+				Value:  fmt.Sprintf("%f ETH", payload.FloorPrice.FloorPrice),
+				Inline: false,
 			}, &discordgo.MessageEmbedField{
 				Name:   "Moving Average Floor Price",
-				Value:  fmt.Sprintf("%f", payload.FloorPrice.FloorPrice),
-				Inline: true,
+				Value:  fmt.Sprintf("%f ETH", payload.FloorPrice.FloorPrice),
+				Inline: false,
 			}, &discordgo.MessageEmbedField{
 				Name:   "24h Volume",
-				Value:  fmt.Sprintf("%f", payload.Volume.Volume),
-				Inline: true,
+				Value:  fmt.Sprintf("%f ETH", payload.Volume.Volume),
+				Inline: false,
 			},
 		},
 		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.

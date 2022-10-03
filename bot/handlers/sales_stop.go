@@ -5,7 +5,6 @@ import (
 	"DIA-NFT-Sales-Bot/models"
 	"database/sql"
 	"fmt"
-
 	"github.com/bwmarrin/discordgo"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
@@ -30,7 +29,7 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 		go subs.UnsubscribeSalesUpdates()
 
 	} else {
-		if !addrExists || chanExists {
+		if !addrExists || !chanExists {
 			message = "Invalid Channel or Address supplied"
 		} else {
 			channelID := channel.ChannelValue(discordSession).ID
@@ -49,7 +48,7 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 				}
 			}()
 
-			message = fmt.Sprintf("Deactivate Sales Subscription for Contract Address : %s  on Channel: %s", address.StringValue(), channel.Name)
+			message = fmt.Sprintf("Deactivated Sales Subscription for Contract Address : %s  on Channel: %s", address.StringValue(), channel.Name)
 		}
 	}
 	defer config.ActiveSalesMux.Unlock()
