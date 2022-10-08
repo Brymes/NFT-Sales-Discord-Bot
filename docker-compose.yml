@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  nftSalesBot:
+    container_name: nftSalesBot
+    build: .
+    restart: always
+    depends_on:
+      - cache
+    environment:
+      DISCORD_BOT_TOKEN: ""
+      DB_HOST: ""
+      DB_USERNAME: ""
+      DB_PASSWORD: ""
+      DB_DATABASE: ""
+      DB_PORT: ""
+      PANIC_CHANNEL: ""
