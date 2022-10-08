@@ -57,26 +57,27 @@ This section is for devs or If you intend on hosting this app yourself for bette
 
 ### Prerequisites
 
-- A Server with Docker installed e.g. [**Ubuntu Example**](https://docs.docker.com/engine/install/ubuntu/)
+- A Server with Docker installed e.g. [**Ubuntu Example**](https://docs.docker.com/engine/install/ubuntu/).
 - A Discord Bot Token as [**described
-  here**](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
-- A Postgres Database
+  here**](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token).
+- A Postgres Database as described [here](https://www.makeuseof.com/install-configure-postgresql-on-ubuntu/). 
 - A channel to receive any uncaught errors. Read [**here**](https://turbofuture.com/internet/Discord-Channel-ID) on how
-  to get a channel ID
+  to get a channel ID.
 
 ### Command to Run
 
 Run the following command. Do replace the required variables with your sourced pre-requisites without the tags
 
 ```
-sudo docker run -d -t -i -e DISCORD_BOT_TOKEN: "<YOUR_DISCORD_BOT_TOKEN>" \
--e DB_HOST: "<YOUR_DB_HOST>" \
--e DB_USERNAME: "<YOUR_DB_USERNAME>" \
--e DB_PASSWORD: "<YOUR_DB_PASSWORD>" \
--e DB_DATABASE: "<YOUR_DB_DATABASE>" \
--e DB_PORT: "<YOUR_DB_PORT>" \
--e PANIC_CHANNEL: "<YOUR_PANIC_CHANNEL_ID>" \
---name my_NFT_Sales_Tracker brymes/discord-nft-sales-tracker 
+sudo docker run -d -t -i --name my-nft-sales-tracker -it --net=host \
+-e DISCORD_BOT_TOKEN="<YOUR_DISCORD_BOT_TOKEN>" \
+-e DB_HOST="<YOUR_DB_HOST>" \
+-e DB_USERNAME="<YOUR_DB_USERNAME>" \
+-e DB_PASSWORD="<YOUR_DB_PASSWORD>" \
+-e DB_DATABASE="<YOUR_DB_DATABASE>" \
+-e DB_PORT="<YOUR_DB_PORT>" \
+-e PANIC_CHANNEL="<YOUR_PANIC_CHANNEL_ID>" \
+brymes/discord-nft-sales-tracker:stable 
 ```
 
 Copyright © 2022 TACBIZ Development (Timothy Odebunmi).  
