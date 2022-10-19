@@ -2,7 +2,6 @@ package services
 
 import (
 	"DIA-NFT-Sales-Bot/config"
-	"DIA-NFT-Sales-Bot/utils"
 	"context"
 	"encoding/json"
 	"github.com/gorilla/websocket"
@@ -72,7 +71,7 @@ func ConnectToService(logger *log.Logger) {
 
 	go func(ctx2 context.Context) {
 		defer close(done)
-		defer utils.HandlePanic(config.DiscordBot, "Error in WebSocket")
+		defer WSHandlePanic(config.DiscordBot, "Error in WebSocket", logger)
 		for {
 			select {
 			case <-ctx2.Done():
@@ -110,7 +109,7 @@ func ConnectToService(logger *log.Logger) {
 		}
 	}(ctx)
 
-	ticker := time.NewTicker(7 * time.Second)
+	ticker := time.NewTicker(30 * time.Second)
 	defer ticker.Stop()
 	for {
 		select {
