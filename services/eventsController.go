@@ -34,7 +34,7 @@ func HandleSales(event NFTEvent) {
 	defer utils.HandlePanic(config.DiscordBot, "Error in Sales Handler")
 
 	config.ActiveSalesMux.Lock()
-	channels, match := config.ActiveSales[event.Response.NFT.NFTClass.Address]
+	channels, match := config.ActiveSales[strings.ToUpper(event.Response.NFT.NFTClass.Address)]
 	config.ActiveSalesMux.Unlock()
 
 	if !match {

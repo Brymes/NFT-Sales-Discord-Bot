@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"strings"
 )
 
 func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -33,6 +34,7 @@ func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 		services.StartEventWS()
 	}
 
+	address = strings.ToUpper(address)
 	//Add Details to Subscriptions in DB
 	models.Subscriptions{
 		Command:   "sales",

@@ -8,6 +8,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
+	"strings"
 )
 
 func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -33,22 +34,23 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 			message = "Invalid Channel or Address supplied"
 		} else {
 			channelID := channel.ChannelValue(discordSession).ID
+			modifiedAddress := strings.ToUpper(address.StringValue())
 
-			subs.ChannelID, subs.Address = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: address.StringValue(), Valid: true}
+			subs.ChannelID, subs.Address = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: modifiedAddress, Valid: true}
 			go subs.UnsubscribeChannelSalesUpdates()
 
 			go func() {
-				subscribedChannels := config.ActiveSales[address.StringValue()]
+				subscribedChannels := config.ActiveSales[modifiedAddress]
 				for index, c := range subscribedChannels {
 					if c == channelID {
 						subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
-						config.ActiveSales[address.StringValue()] = subscribedChannels
+						config.ActiveSales[modifiedAddress] = subscribedChannels
 						break
 					}
 				}
 			}()
 
-			message = fmt.Sprintf("Deactivated Sales Subscription for Contract Address : %s  on Channel: %s", address.StringValue(), channel.Name)
+			message = fmt.Sprintf("Deactivated Sales Subscription for Contract Address : %s  on Channel: %s", modifiedAddress, channel.Name)
 		}
 	}
 	defer config.ActiveSalesMux.Unlock()
