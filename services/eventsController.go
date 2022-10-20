@@ -34,14 +34,15 @@ func HandleSales(event NFTEvent) {
 	defer utils.HandlePanic(config.DiscordBot, "Error in Sales Handler")
 
 	config.ActiveSalesMux.Lock()
-	channels, match := config.ActiveSales[strings.ToUpper(event.Response.NFT.NFTClass.Address)]
+	chain, match := config.ActiveSales[strings.ToUpper(event.Response.NFT.NFTClass.Address)]
 	config.ActiveSalesMux.Unlock()
 
 	if !match {
 		return
 	} else {
+		channels := chain[event.Response.NFT.NFTClass.Blockchain]
 		for _, channel := range channels {
-			go SendSalesMessage(event, channel)
+			go SendSalesMessage(event, string(channel))
 		}
 	}
 }
@@ -49,24 +50,26 @@ func HandleSales(event NFTEvent) {
 func HandleAllSales(event NFTEvent) {
 	// This Handle panic is useful for if all bots are stopped and arrays/maps have been emptied
 	defer utils.HandlePanic(config.DiscordBot, "Error in All Sales Handler")
-	priceInEth := utils.ConvertDecimalsToEth(event.Response.Price, event.Response.Currency.Decimals)
+	priceInEth := utils.ConvertDecimalsToCurrency(event.Response.Price, event.Response.Currency.Decimals)
 
 	config.ActiveAllSalesMux.Lock()
-
 	for _, elem := range config.ActiveAllSalesKeys {
 		if priceInEth > elem {
-			for _, channel := range config.ActiveAllSales[elem] {
-				go SendSalesMessage(event, channel)
+			chain := config.ActiveAllSales[elem]
+			for _, channel := range chain[event.Response.NFT.NFTClass.Blockchain] {
+				go SendSalesMessage(event, string(channel))
 			}
 		}
 	}
-	config.ActiveAllSalesMux.Unlock()
+
+	defer config.ActiveAllSalesMux.Unlock()
+
 }
 
 func SendSalesMessage(event NFTEvent, channelID string) {
 	defer utils.HandlePanic(config.DiscordBot, "Error Sending sales event")
 	eventResponse := event.Response
-	priceInEth := fmt.Sprintf("%v", utils.ConvertDecimalsToEth(eventResponse.Price, eventResponse.Currency.Decimals))
+	priceInEth := fmt.Sprintf("%v", utils.ConvertDecimalsToCurrency(eventResponse.Price, eventResponse.Currency.Decimals))
 	marketPlaceLink := utils.GetMarketPlaceLink(eventResponse.Exchange, eventResponse.NFT.NFTClass.Address, eventResponse.NFT.TokenID)
 	title := fmt.Sprintf("NFT Sale @ %s ETH on %s", priceInEth, eventResponse.Exchange)
 
