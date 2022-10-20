@@ -8,12 +8,13 @@ import (
 
 type Subscriptions struct {
 	gorm.Model
-	Command   string         `gorm:"column:command;not null"`
-	ChannelID sql.NullString `gorm:"column:channel_id"`
-	Address   sql.NullString `gorm:"column:address"`
-	Threshold float64        `gorm:"column:threshold"`
-	All       bool           `gorm:"column:all"`
-	Active    bool           `gorm:"column:is_active"`
+	Command    string         `gorm:"column:command;not null"`
+	Blockchain string         `gorm:"column:blockchain;not null"`
+	ChannelID  sql.NullString `gorm:"column:channel_id"`
+	Address    sql.NullString `gorm:"column:address"`
+	Threshold  float64        `gorm:"column:threshold"`
+	All        bool           `gorm:"column:all"`
+	Active     bool           `gorm:"column:is_active"`
 }
 
 func (subscription Subscriptions) SaveSubscription() {

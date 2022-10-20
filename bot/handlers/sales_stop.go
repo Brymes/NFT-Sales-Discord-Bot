@@ -18,7 +18,7 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 		subs                = models.Subscriptions{Command: "sales"}
 		address, addrExists = optionsMap["address"]
 		channel, chanExists = optionsMap["channel"]
-		all                 = optionsMap["all"].BoolValue()
+		all, blockchain     = optionsMap["all"].BoolValue(), optionsMap["blockchain"].StringValue()
 	)
 	config.ActiveSalesMux.Lock()
 
@@ -36,15 +36,15 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 			channelID := channel.ChannelValue(discordSession).ID
 			modifiedAddress := strings.ToUpper(address.StringValue())
 
-			subs.ChannelID, subs.Address = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: modifiedAddress, Valid: true}
+			subs.ChannelID, subs.Address, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: modifiedAddress, Valid: true}, blockchain
 			go subs.UnsubscribeChannelSalesUpdates()
 
 			go func() {
-				subscribedChannels := config.ActiveSales[modifiedAddress]
+				subscribedChannels := config.ActiveSales[modifiedAddress][blockchain]
 				for index, c := range subscribedChannels {
 					if c == channelID {
 						subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
-						config.ActiveSales[modifiedAddress] = subscribedChannels
+						config.ActiveSales[modifiedAddress][blockchain] = subscribedChannels
 						break
 					}
 				}

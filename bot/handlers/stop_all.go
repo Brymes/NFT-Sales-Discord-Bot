@@ -37,19 +37,23 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 		for _, channelSub := range channelSubs {
 			switch channelSub.Command {
 			case "sales":
-				for index, subChannel := range config.ActiveSales[channelSub.Address.String] {
-					if subChannel == channelSub.ChannelID.String {
-						config.ActiveSalesMux.Lock()
-						config.ActiveSales[channelSub.Address.String] = slices.Delete(config.ActiveSales[channelSub.Address.String], index, index+1)
-						break
+				for chainName, chain := range config.ActiveSales[channelSub.Address.String] {
+					for index, subChannel := range chain {
+						if subChannel == channelSub.ChannelID.String {
+							config.ActiveSalesMux.Lock()
+							config.ActiveSales[channelSub.Address.String][chainName] = slices.Delete(config.ActiveSales[channelSub.Address.String][chainName], index, index+1)
+							break
+						}
 					}
 				}
 			case "all_sales":
-				for index, subChannel := range config.ActiveAllSales[channelSub.Threshold] {
-					if subChannel == channelSub.ChannelID.String {
-						config.ActiveAllSalesMux.Lock()
-						config.ActiveAllSales[channelSub.Threshold] = slices.Delete(config.ActiveAllSales[channelSub.Threshold], index, index+1)
-						break
+				for chainName, chain := range config.ActiveAllSales[channelSub.Threshold] {
+					for index, subChannel := range chain {
+						if subChannel == channelSub.ChannelID.String {
+							config.ActiveAllSalesMux.Lock()
+							config.ActiveAllSales[channelSub.Threshold][chainName] = slices.Delete(config.ActiveAllSales[channelSub.Threshold][chainName], index, index+1)
+							break
+						}
 					}
 				}
 			}

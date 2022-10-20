@@ -12,10 +12,10 @@ import (
 func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	address := optionsMap["address"].StringValue()
+	address, blockchain := optionsMap["address"].StringValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
-	message := fmt.Sprintf("Get Floor Price for Collection: %s ", utils.GetEtherScanLink("address", address))
+	message := fmt.Sprintf("Get Floor Price for Collection: %s ", utils.GetScanLink("address", address, blockchain))
 	err := discordSession.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
@@ -28,7 +28,7 @@ func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	}
 
 	response := services.FloorPriceAPI(address)
-	embedMsg := createFloorMessage(response)
+	embedMsg := createFloorMessage(response, blockchain)
 
 	_, err = config.DiscordBot.ChannelMessageSendEmbed(interaction.ChannelID, embedMsg)
 	if err != nil {
@@ -36,10 +36,10 @@ func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	}
 }
 
-func createFloorMessage(payload services.Floor) *discordgo.MessageEmbed {
-	etherScanLink := utils.GetEtherScanLink("address", payload.Volume.Address)
+func createFloorMessage(payload services.Floor, blockchain string) *discordgo.MessageEmbed {
+	etherScanLink := utils.GetScanLink("address", payload.Volume.Address, blockchain)
 
-	title := fmt.Sprintf("Floor Price of %s is  %f ETH", payload.Volume.Collection, payload.FloorPrice.FloorPrice)
+	title := fmt.Sprintf("Floor Price of %s is  %f", payload.Volume.Collection, payload.FloorPrice.FloorPrice)
 
 	embed := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},

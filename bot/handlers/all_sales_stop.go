@@ -18,7 +18,7 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 		subs                = models.Subscriptions{Command: "all_sales"}
 		threshold, tExists  = optionsMap["threshold"]
 		channel, chanExists = optionsMap["channel"]
-		all                 = optionsMap["all"].BoolValue()
+		all, blockchain     = optionsMap["all"].BoolValue(), optionsMap["blockchain"].StringValue()
 	)
 	config.ActiveAllSalesMux.Lock()
 
@@ -27,6 +27,7 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 		message = "Deactivate AllSales Subscription for all Channels and Thresholds"
 
 		go maps.Clear(config.ActiveAllSales)
+		config.ActiveAllSalesKeys = []float64{}
 		go subs.UnsubscribeSalesUpdates()
 
 	} else {
@@ -34,20 +35,8 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 			message = "Invalid Threshold or Channel supplied"
 		} else {
 			channelID := channel.ChannelValue(discordSession).ID
-			subs.ChannelID, subs.Threshold = sql.NullString{String: channelID, Valid: true}, threshold.FloatValue()
 
-			go subs.UnsubscribeChannelSalesUpdates()
-
-			go func() {
-				subscribedChannels := config.ActiveAllSales[threshold.FloatValue()]
-				for index, c := range subscribedChannels {
-					if c == channelID {
-						subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
-						config.ActiveAllSales[threshold.FloatValue()] = subscribedChannels
-						break
-					}
-				}
-			}()
+			go unsubscribeAllSales(channelID, subs, threshold.FloatValue(), blockchain)
 
 			message = fmt.Sprintf("Deactivated AllSales Subscription for Threshold : %f ETH  on Channel: %s", threshold.FloatValue(), channel.Name)
 		}
@@ -63,5 +52,20 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 
 	if err != nil {
 		panic(err)
+	}
+}
+
+func unsubscribeAllSales(channelID string, subs models.Subscriptions, threshold float64, blockchain string) {
+	subs.ChannelID, subs.Threshold, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, threshold, blockchain
+
+	go subs.UnsubscribeChannelSalesUpdates()
+
+	subscribedChannels := config.ActiveAllSales[threshold][blockchain]
+	for index, c := range subscribedChannels {
+		if c == channelID {
+			subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
+			config.ActiveAllSales[threshold][blockchain] = subscribedChannels
+			break
+		}
 	}
 }

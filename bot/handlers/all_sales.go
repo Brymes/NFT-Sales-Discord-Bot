@@ -14,7 +14,7 @@ import (
 func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	channel, threshold := optionsMap["channel"].ChannelValue(discordSession), optionsMap["threshold"].FloatValue()
+	channel, threshold, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["threshold"].FloatValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Setup Channel:%s \t to receive updates for Contract Address: %v", channel.Name, threshold)
@@ -36,19 +36,28 @@ func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.I
 
 	//Add Details to Subscriptions in DB
 	models.Subscriptions{
-		Command:   "all_sales",
-		ChannelID: sql.NullString{String: channel.ID, Valid: true},
-		Threshold: threshold,
-		Active:    true,
+		Command:    "all_sales",
+		Blockchain: blockchain,
+		ChannelID:  sql.NullString{String: channel.ID, Valid: true},
+		Threshold:  threshold,
+		Active:     true,
 	}.SaveSubscription()
+
+	addDetailsToMap(threshold, channel.ID, blockchain)
+
+	//Follow Up has been Set up
+	SendChannelSetupFollowUp("Channel setup complete & successful", discordSession, interaction)
+}
+
+func addDetailsToMap(threshold float64, channelID string, blockchain string) {
 
 	//Add Details to AllSales[ChannelID]
 	config.ActiveAllSalesMux.Lock()
 
-	subscribedChannels := config.ActiveAllSales[threshold]
-	subscribedChannels = append(subscribedChannels, channel.ID)
+	subscribedChannels := config.ActiveAllSales[threshold][blockchain]
+	subscribedChannels = append(subscribedChannels, channelID)
 
-	config.ActiveAllSales[threshold] = utils.RemoveArrayDuplicates(subscribedChannels)
+	config.ActiveAllSales[threshold][blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
 
 	config.ActiveAllSalesKeys = make([]float64, 0, len(subscribedChannels))
 
@@ -59,7 +68,4 @@ func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.I
 	sort.Float64s(config.ActiveAllSalesKeys)
 
 	defer config.ActiveAllSalesMux.Unlock()
-
-	//Follow Up has been Set up
-	SendChannelSetupFollowUp("Channel setup complete & successful", discordSession, interaction)
 }

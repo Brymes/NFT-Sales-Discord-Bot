@@ -24,9 +24,9 @@ func LoadCurrentSubscriptions() bool {
 			go func() {
 				config.ActiveSalesMux.Lock()
 
-				subscribedChannels := config.ActiveSales[subscription.Address.String]
+				subscribedChannels := config.ActiveSales[subscription.Address.String][subscription.Blockchain]
 				subscribedChannels = append(subscribedChannels, subscription.ChannelID.String)
-				config.ActiveSales[subscription.Address.String] = utils.RemoveArrayDuplicates(subscribedChannels)
+				config.ActiveSales[subscription.Address.String][subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
 
 				config.ActiveSalesMux.Unlock()
 			}()
@@ -34,10 +34,10 @@ func LoadCurrentSubscriptions() bool {
 			go func() {
 				config.ActiveAllSalesMux.Lock()
 
-				subscribedChannels := config.ActiveAllSales[subscription.Threshold]
+				subscribedChannels := config.ActiveAllSales[subscription.Threshold][subscription.Blockchain]
 				subscribedChannels = append(subscribedChannels, subscription.ChannelID.String)
 
-				config.ActiveAllSales[subscription.Threshold] = utils.RemoveArrayDuplicates(subscribedChannels)
+				config.ActiveAllSales[subscription.Threshold][subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
 
 				config.ActiveAllSalesKeys = make([]float64, 0, len(subscribedChannels))
 

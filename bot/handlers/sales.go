@@ -14,7 +14,7 @@ import (
 func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	channel, address := optionsMap["channel"].ChannelValue(discordSession), optionsMap["contract_address"].StringValue()
+	channel, address, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["contract_address"].StringValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Setup Channel:%s \t to receive sales updates for Contract Address: %s", channel.Name, address)
@@ -37,18 +37,19 @@ func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	address = strings.ToUpper(address)
 	//Add Details to Subscriptions in DB
 	models.Subscriptions{
-		Command:   "sales",
-		ChannelID: sql.NullString{String: channel.ID, Valid: true},
-		Address:   sql.NullString{String: address, Valid: true},
-		Active:    true,
+		Command:    "sales",
+		Blockchain: blockchain,
+		ChannelID:  sql.NullString{String: channel.ID, Valid: true},
+		Address:    sql.NullString{String: address, Valid: true},
+		Active:     true,
 	}.SaveSubscription()
 
 	//Add Details to AllSales[ChannelID]
 	config.ActiveSalesMux.Lock()
 
-	subscribedChannels := config.ActiveSales[address]
+	subscribedChannels := config.ActiveSales[address][blockchain]
 	subscribedChannels = append(subscribedChannels, channel.ID)
-	config.ActiveSales[address] = utils.RemoveArrayDuplicates(subscribedChannels)
+	config.ActiveSales[address][blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
 
 	defer config.ActiveSalesMux.Unlock()
 

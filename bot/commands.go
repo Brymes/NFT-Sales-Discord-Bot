@@ -19,6 +19,18 @@ var (
 		discordgo.ChannelTypeGuildPublicThread,
 		discordgo.ChannelTypeGuildStore,
 	}
+	BlockChainChoices = []*discordgo.ApplicationCommandOptionChoice{
+		{
+			Name:  "Astar",
+			Value: "Astar",
+		}, {
+			Name:  "Ethereum",
+			Value: "Ethereum",
+		}, {
+			Name:  "Solana",
+			Value: "Solana",
+		},
+	}
 )
 
 func RegisterCommands(discordSession *discordgo.Session) {
@@ -90,6 +102,13 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
 				},
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "blockchain",
+					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Choices:     BlockChainChoices,
+					Required:    true,
+				},
 			},
 		},
 		{
@@ -109,6 +128,13 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					ChannelTypes: TextChannelType,
 					Required:     true,
 				},
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "blockchain",
+					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Choices:     BlockChainChoices,
+					Required:    true,
+				},
 			},
 		},
 		{
@@ -119,6 +145,13 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Type:        discordgo.ApplicationCommandOptionBoolean,
 					Name:        "all",
 					Description: "Select True to stop all threshold bots",
+					Required:    true,
+				},
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "blockchain",
+					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Choices:     BlockChainChoices,
 					Required:    true,
 				},
 				{

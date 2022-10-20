@@ -34,15 +34,15 @@ func HandleSales(event NFTEvent) {
 	defer utils.HandlePanic(config.DiscordBot, "Error in Sales Handler")
 
 	config.ActiveSalesMux.Lock()
-	chain, match := config.ActiveSales[strings.ToUpper(event.Response.NFT.NFTClass.Address)]
+	chains, match := config.ActiveSales[strings.ToUpper(event.Response.NFT.NFTClass.Address)]
 	config.ActiveSalesMux.Unlock()
 
 	if !match {
 		return
 	} else {
-		channels := chain[event.Response.NFT.NFTClass.Blockchain]
+		channels := chains[event.Response.NFT.NFTClass.Blockchain]
 		for _, channel := range channels {
-			go SendSalesMessage(event, string(channel))
+			go SendSalesMessage(event, channel)
 		}
 	}
 }
@@ -50,14 +50,14 @@ func HandleSales(event NFTEvent) {
 func HandleAllSales(event NFTEvent) {
 	// This Handle panic is useful for if all bots are stopped and arrays/maps have been emptied
 	defer utils.HandlePanic(config.DiscordBot, "Error in All Sales Handler")
-	priceInEth := utils.ConvertDecimalsToCurrency(event.Response.Price, event.Response.Currency.Decimals)
+	price := utils.ConvertDecimalsToCurrency(event.Response.Price, event.Response.Currency.Decimals)
 
 	config.ActiveAllSalesMux.Lock()
 	for _, elem := range config.ActiveAllSalesKeys {
-		if priceInEth > elem {
-			chain := config.ActiveAllSales[elem]
-			for _, channel := range chain[event.Response.NFT.NFTClass.Blockchain] {
-				go SendSalesMessage(event, string(channel))
+		if price > elem {
+			chains := config.ActiveAllSales[elem]
+			for _, channel := range chains[event.Response.NFT.NFTClass.Blockchain] {
+				go SendSalesMessage(event, channel)
 			}
 		}
 	}
@@ -68,10 +68,22 @@ func HandleAllSales(event NFTEvent) {
 
 func SendSalesMessage(event NFTEvent, channelID string) {
 	defer utils.HandlePanic(config.DiscordBot, "Error Sending sales event")
+	var price, txHash, buyersAddress, sellerAddress string
+
 	eventResponse := event.Response
-	priceInEth := fmt.Sprintf("%v", utils.ConvertDecimalsToCurrency(eventResponse.Price, eventResponse.Currency.Decimals))
+	blockchain := eventResponse.NFT.NFTClass.Blockchain
+
+	switch blockchain {
+	case "Ethereum":
+		price, txHash, buyersAddress, sellerAddress = parseEthereumSalesMessage(event)
+	case "Solana":
+		price, txHash, buyersAddress, sellerAddress = parseSolanaSalesMessage(event)
+	case "Astar":
+		price, txHash, buyersAddress, sellerAddress = parseAstarSalesMessage(event)
+	}
+
 	marketPlaceLink := utils.GetMarketPlaceLink(eventResponse.Exchange, eventResponse.NFT.NFTClass.Address, eventResponse.NFT.TokenID)
-	title := fmt.Sprintf("NFT Sale @ %s ETH on %s", priceInEth, eventResponse.Exchange)
+	title := fmt.Sprintf("NFT Sale @ %s on %s", price, eventResponse.Exchange)
 
 	embed := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},
@@ -85,15 +97,15 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 				Inline: false,
 			}, {
 				Name:   "Seller Address",
-				Value:  utils.GetEtherScanLink("address", eventResponse.FromAddress),
+				Value:  sellerAddress,
 				Inline: true,
 			}, {
 				Name:   "Buyer Address",
-				Value:  utils.GetEtherScanLink("address", eventResponse.ToAddress),
+				Value:  buyersAddress,
 				Inline: true,
 			}, {
-				Name:   "Price In Eth",
-				Value:  priceInEth,
+				Name:   "Price",
+				Value:  price,
 				Inline: true,
 			}, {
 				Name:   "MarketPlace",
@@ -105,7 +117,7 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 				Inline: true,
 			}, {
 				Name:   "TxHash",
-				Value:  utils.GetEtherScanLink("transaction", eventResponse.TxHash),
+				Value:  txHash,
 				Inline: true,
 			},
 		},
@@ -118,4 +130,31 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 		panic(err)
 	}
 
+}
+
+func parseEthereumSalesMessage(event NFTEvent) (price, txHash, buyersAddress, sellerAddress string) {
+	eventResponse := event.Response
+	sellerAddress = utils.GetScanLink("address", eventResponse.FromAddress, "ethereum")
+	buyersAddress = utils.GetScanLink("address", eventResponse.ToAddress, "ethereum")
+	price = fmt.Sprintf("%v ETH", utils.ConvertDecimalsToCurrency(eventResponse.Price, eventResponse.Currency.Decimals))
+	txHash = utils.GetScanLink("transaction", eventResponse.TxHash, "ethereum")
+	return
+}
+
+func parseSolanaSalesMessage(event NFTEvent) (price, txHash, buyersAddress, sellerAddress string) {
+	eventResponse := event.Response
+	sellerAddress = utils.GetScanLink("address", eventResponse.FromAddress, "solana")
+	buyersAddress = utils.GetScanLink("address", eventResponse.ToAddress, "solana")
+	price = fmt.Sprintf("%v SOL", utils.ConvertDecimalsToCurrency(eventResponse.Price, eventResponse.Currency.Decimals))
+	txHash = utils.GetScanLink("transaction", eventResponse.TxHash, "solana")
+	return
+}
+
+func parseAstarSalesMessage(event NFTEvent) (price, txHash, buyersAddress, sellerAddress string) {
+	eventResponse := event.Response
+	sellerAddress = utils.GetScanLink("address", eventResponse.FromAddress, "astar")
+	buyersAddress = utils.GetScanLink("address", eventResponse.ToAddress, "astar")
+	price = fmt.Sprintf("%v ASTR", utils.ConvertDecimalsToCurrency(eventResponse.Price, eventResponse.Currency.Decimals))
+	txHash = utils.GetScanLink("transaction", eventResponse.TxHash, "astar")
+	return
 }
