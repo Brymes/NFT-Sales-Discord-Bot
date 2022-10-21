@@ -18,6 +18,10 @@ var (
 		{"/all_sales", "Return all sales above the provided threshold"},
 		{"/all_sales_stop", "Stop bot for all sales above the predetermined threshold and contract address"},
 		{"/stop_all", "Stops all bots from operating in the selected channel or stop all bots if channel is not provided"},
+		{"/set_up_info_bot", "SetUp channel to receive commands to track NFT sales for set contract address from DIA NFT WebSocket to selected channel"},
+		{"/volume", "Return volume for previously set Collection through set_up_info_bot"},
+		{"/floor_price", "Returns floor price for previously set Collection through set_up_info_bot"},
+		{"/last_trades", "Returns recent trades for previously set collections through set_up_info_bot"},
 	}
 )
 

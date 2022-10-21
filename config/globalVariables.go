@@ -25,6 +25,9 @@ var (
 	ActiveNftEventWS     = false
 	NftEventWSCancelFunc context.CancelFunc
 
+	ActiveSalesInfoBot = map[string]map[string]string{}
+	ActiveSalesInfoMux = &sync.Mutex{}
+
 	// PanicChannelID Variable to Hold ChannelID to forward all errors
 	PanicChannelID string
 )

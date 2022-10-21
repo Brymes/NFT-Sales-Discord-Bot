@@ -26,6 +26,7 @@ var ChainURLMap = map[string]map[string]string{
 
 func GetScanLink(linkType, payload, blockchain string) string {
 	linkType = strings.ToLower(linkType)
+	blockchain = strings.ToLower(blockchain)
 	chainUrls := ChainURLMap[blockchain]
 	return fmt.Sprintf("%s/%s", chainUrls[linkType], payload)
 }

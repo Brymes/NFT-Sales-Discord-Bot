@@ -42,8 +42,44 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		{
 			Name:        "subscriptions",
 			Description: "Returns a list of commands which the server has enabled",
+		}, {
+			Name:        "volume",
+			Description: "Return volume for previously set Collection through set_up_info_bot",
+		}, {
+			Name:        "floor_price",
+			Description: "Returns floor price for previously set Collection through set_up_info_bot",
+		}, {
+			Name:        "last_trades",
+			Description: "Returns recent trades for previously set collections through set_up_info_bot",
 		},
 		{
+			Name:        "set_up_info_bot",
+			Description: "SetUp bot to feeds NFT sales for set contract address from DIA NFT WebSocket to selected channel",
+			Options: []*discordgo.ApplicationCommandOption{
+
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "collection_address",
+					Description: "Contract Address to filter transactions from",
+					Required:    true,
+					MinLength:   &ContractAddressMinLength,
+				},
+				{
+					Type:         discordgo.ApplicationCommandOptionChannel,
+					Name:         "channel",
+					Description:  "Channel to push information of matching transactions to.",
+					ChannelTypes: TextChannelType,
+					Required:     true,
+				},
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "blockchain",
+					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Choices:     BlockChainChoices,
+					Required:    true,
+				},
+			},
+		}, {
 			Name:        "sales",
 			Description: "SetUp bot to feeds NFT sales for set contract address from DIA NFT WebSocket to selected channel",
 			Options: []*discordgo.ApplicationCommandOption{
@@ -61,6 +97,13 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     true,
+				},
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "blockchain",
+					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Choices:     BlockChainChoices,
+					Required:    true,
 				},
 			},
 		},

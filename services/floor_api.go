@@ -108,3 +108,26 @@ func ParseURLs(address string) map[string]string {
 
 	return urls
 }
+
+func FloorAPI(address, blockchain string) (response FloorPriceResponse) {
+	var (
+		url        string
+		bodyCloser io.ReadCloser
+		body       []byte
+		err        error
+	)
+	response = FloorPriceResponse{}
+
+	url = fmt.Sprintf("https://api.diadata.org/v1/NFTFloor/%s/%s", blockchain, address)
+
+	bodyCloser, body = MakeRequest(url)
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		errorRes := errors.New("Error reading response from Volume API" + err.Error() + "\n\n" + address + blockchain)
+		panic(errorRes)
+	}
+
+	bodyCloser.Close()
+
+	return
+}
