@@ -9,20 +9,28 @@ import (
 
 var (
 	SlashCommands = map[string]func(*discordgo.Session, *discordgo.InteractionCreate){
-		"help":           handlers.HelpHandler,
-		"subscriptions":  handlers.SubscriptionsHandler,
-		"sales":          handlers.SalesHandler,
-		"sales_stop":     handlers.SalesStopHandler,
-		"floor":          handlers.FloorHandler,
-		"all_sales":      handlers.AllSalesHandler,
-		"all_sales_stop": handlers.AllSalesStopHandler,
-		"stop_all":       handlers.StopAllHandler,
+		"help":              handlers.HelpHandler,
+		"subscriptions":     handlers.SubscriptionsHandler,
+		"sales":             handlers.SalesHandler,
+		"sales_stop":        handlers.SalesStopHandler,
+		"floor":             handlers.FloorHandler,
+		"all_sales":         handlers.AllSalesHandler,
+		"all_sales_stop":    handlers.AllSalesStopHandler,
+		"stop_all":          handlers.StopAllHandler,
+		"set_up_info_bot":   handlers.SetUpInfoBotHandler,
+		"floor_price":       handlers.FloorPriceHandler,
+		"last_trades":       handlers.LastTradesHandler,
+		"volume":            handlers.VolumeHandler,
+		"stop_subscription": handlers.StopSubscriptionsHandler,
+	}
+	componentHandlers = map[string]func(*discordgo.Session, *discordgo.InteractionCreate){
+		"commands_to_stop": handlers.StopSubscriptions,
 	}
 )
 
 func RegisterHandlers(discordSession *discordgo.Session) {
 	// Register the slash commands Handler func as a callback for MessageCreate events.
-	discordSession.AddHandler(slashCommandHandler)
+	discordSession.AddHandler(centralCommandHandler)
 
 	// Register the message Handler func as a callback for MessageCreate events.
 	discordSession.AddHandler(messageHandler)
@@ -54,12 +62,22 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-func slashCommandHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
-	defer utils.HandlePanic(discordSession, fmt.Sprintf("Error Handling command %s", interaction.ApplicationCommandData().Name))
+func centralCommandHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
+	switch interaction.Type {
+	case discordgo.InteractionApplicationCommand:
+		defer utils.HandlePanic(discordSession, fmt.Sprintf("Error Handling command %s", interaction.ApplicationCommandData().Name))
 
-	if handler, ok := SlashCommands[interaction.ApplicationCommandData().Name]; ok {
-		handler(discordSession, interaction)
-	} else {
-		SlashCommands["help"](discordSession, interaction)
+		if handler, ok := SlashCommands[interaction.ApplicationCommandData().Name]; ok {
+			handler(discordSession, interaction)
+		} else {
+			SlashCommands["help"](discordSession, interaction)
+		}
+	case discordgo.InteractionMessageComponent:
+
+		if handler, ok := componentHandlers[interaction.MessageComponentData().CustomID]; ok {
+			handler(discordSession, interaction)
+		} else {
+			SlashCommands["help"](discordSession, interaction)
+		}
 	}
 }

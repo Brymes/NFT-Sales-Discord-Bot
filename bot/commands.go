@@ -42,6 +42,10 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		{
 			Name:        "subscriptions",
 			Description: "Returns a list of commands which the server has enabled",
+		},
+		{
+			Name:        "stop_subscription",
+			Description: "Select what commands/bots kill",
 		}, {
 			Name:        "volume",
 			Description: "Return volume for previously set Collection through set_up_info_bot",

@@ -18,6 +18,13 @@ func ParseCommandOptions(interaction *discordgo.InteractionCreate) map[string]*d
 func SendChannelSetupFollowUp(message string, discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	_, err := discordSession.FollowupMessageCreate(interaction.Interaction, true, &discordgo.WebhookParams{Content: message})
 	if err != nil {
-		panic("Error Creating Sales Channel " + err.Error())
+		panic("Error Sending FollowUp Message " + err.Error())
+	}
+}
+
+func SendComplexFollowUp(followUp discordgo.WebhookParams, discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
+	_, err := discordSession.FollowupMessageCreate(interaction.Interaction, true, &followUp)
+	if err != nil {
+		panic("Error Sending FollowUp Message " + err.Error())
 	}
 }
