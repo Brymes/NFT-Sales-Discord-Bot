@@ -54,6 +54,14 @@ func (subscription Subscriptions) DeactivateAllSubscriptions() {
 	}
 }
 
+func (subscription Subscriptions) DeactivateSubscriptions(idList []int) {
+	result := config.DBClient.Model(&subscription).Where("id IN ?", idList).Updates(map[string]interface{}{"is_active": false})
+	if result.Error != nil {
+		err := "Error batch deactivating All Subscriptions : \n" + result.Error.Error()
+		panic(err)
+	}
+}
+
 func (subscription Subscriptions) UnsubscribeChannelSalesUpdates() {
 	var result *gorm.DB
 
