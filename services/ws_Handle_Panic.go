@@ -1,11 +1,13 @@
 package services
 
 import (
+	"DIA-NFT-Sales-Bot/config"
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"log"
 	"runtime/debug"
+	"time"
 )
 
 func WSHandlePanic(discordSession *discordgo.Session, customMessage string, logger *log.Logger) {
@@ -25,7 +27,10 @@ func WSHandlePanic(discordSession *discordgo.Session, customMessage string, logg
 		msg = append(msg, []string{"Call Stack", stack})
 
 		log.Println("restarting Connection")
+		config.ShutDownWS()
+		time.Sleep(5 * time.Second)
 		go ConnectToService(logger)
+		config.ActiveNftEventWS = true
 		logger.Println("Restarted WebSocket")
 	}
 }
