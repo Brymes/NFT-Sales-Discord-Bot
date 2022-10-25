@@ -15,7 +15,7 @@ func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 	address, blockchain := optionsMap["address"].StringValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
-	message := fmt.Sprintf("Get Floor Price for Collection: %s ", utils.GetScanLink("address", address, blockchain))
+	message := fmt.Sprintf("Get Floor Price for Collection: %s ", utils.CreateHyperLink(address, utils.GetScanLink("address", address, blockchain)))
 	err := discordSession.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
