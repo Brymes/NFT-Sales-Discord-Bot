@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"strings"
 )
 
 func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -44,10 +45,16 @@ func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 
 	//Add Details to AllSales[ChannelID]
 	config.ActiveSalesMux.Lock()
+	data := config.ActiveSales[strings.ToUpper(address)]
+	if len(data) == 0 {
+		data = make(map[string][]string)
+	}
 
-	subscribedChannels := config.ActiveSales[address][blockchain]
+	subscribedChannels := data[blockchain]
 	subscribedChannels = append(subscribedChannels, channel.ID)
-	config.ActiveSales[address][blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+	data[blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+
+	config.ActiveSales[strings.ToUpper(address)] = data
 
 	defer config.ActiveSalesMux.Unlock()
 

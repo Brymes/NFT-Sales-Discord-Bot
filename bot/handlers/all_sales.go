@@ -53,11 +53,15 @@ func addDetailsToMap(threshold float64, channelID string, blockchain string) {
 
 	//Add Details to AllSales[ChannelID]
 	config.ActiveAllSalesMux.Lock()
-
-	subscribedChannels := config.ActiveAllSales[threshold][blockchain]
+	data := config.ActiveAllSales[threshold]
+	if len(data) == 0 {
+		data = map[string][]string{}
+	}
+	subscribedChannels := data[blockchain]
 	subscribedChannels = append(subscribedChannels, channelID)
 
-	config.ActiveAllSales[threshold][blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+	data[blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+	config.ActiveAllSales[threshold] = data
 
 	config.ActiveAllSalesKeys = make([]float64, 0, len(subscribedChannels))
 
