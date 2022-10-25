@@ -26,7 +26,8 @@ func StopSubscriptionsHandler(discordSession *discordgo.Session, interaction *di
 
 	subscriptions := parseSubscriptionsFromDB(discordSession)
 	minimumValues := 1
-	response := discordgo.WebhookParams{
+
+	response := discordgo.MessageSend{
 		Content: "Kindly Select from the list below bots you would like to kill",
 		Components: []discordgo.MessageComponent{
 			discordgo.ActionsRow{
@@ -35,7 +36,6 @@ func StopSubscriptionsHandler(discordSession *discordgo.Session, interaction *di
 						CustomID:    "commands_to_stop",
 						Placeholder: "Stop Bots",
 						MinValues:   &minimumValues,
-						MaxValues:   10,
 						Options:     subscriptions,
 					},
 				},
@@ -43,7 +43,7 @@ func StopSubscriptionsHandler(discordSession *discordgo.Session, interaction *di
 		},
 	}
 
-	SendComplexFollowUp(response, discordSession, interaction)
+	SendComplexMessage(response, discordSession, interaction)
 
 }
 
@@ -101,6 +101,7 @@ func StopSubscriptions(discordSession *discordgo.Session, interaction *discordgo
 
 	go models.Subscriptions{}.DeactivateSubscriptions(idArray)
 
+	StopAllBots()
 	startWS := models.LoadCurrentSubscriptions()
 	if !config.ActiveNftEventWS && startWS {
 		services.StartEventWS()

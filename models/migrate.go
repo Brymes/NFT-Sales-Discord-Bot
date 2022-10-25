@@ -5,6 +5,7 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"log"
 	"sort"
+	"strings"
 )
 
 func InitMigrations() {
@@ -24,10 +25,15 @@ func LoadCurrentSubscriptions() bool {
 			go func() {
 				config.ActiveSalesMux.Lock()
 
-				subscribedChannels := config.ActiveSales[subscription.Address.String][subscription.Blockchain]
+				subscribedChannels := config.ActiveSales[strings.ToUpper(subscription.Address.String)][subscription.Blockchain]
 				subscribedChannels = append(subscribedChannels, subscription.ChannelID.String)
-				config.ActiveSales[subscription.Address.String][subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+				data := config.ActiveSales[strings.ToUpper(subscription.Address.String)]
+				if len(data) == 0 {
+					data = make(map[string][]string)
+				}
 
+				data[subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+				config.ActiveSales[strings.ToUpper(subscription.Address.String)] = data
 				config.ActiveSalesMux.Unlock()
 			}()
 		case "all_sales":
@@ -37,7 +43,12 @@ func LoadCurrentSubscriptions() bool {
 				subscribedChannels := config.ActiveAllSales[subscription.Threshold][subscription.Blockchain]
 				subscribedChannels = append(subscribedChannels, subscription.ChannelID.String)
 
-				config.ActiveAllSales[subscription.Threshold][subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+				data := config.ActiveAllSales[subscription.Threshold]
+				if len(data) == 0 {
+					data = map[string][]string{}
+				}
+				data[subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
+				config.ActiveAllSales[subscription.Threshold] = data
 
 				config.ActiveAllSalesKeys = make([]float64, 0, len(subscribedChannels))
 
@@ -48,6 +59,16 @@ func LoadCurrentSubscriptions() bool {
 				sort.Float64s(config.ActiveAllSalesKeys)
 
 				config.ActiveAllSalesMux.Unlock()
+			}()
+		case "set_up_info":
+			go func() {
+				config.ActiveSalesInfoMux.Lock()
+
+				config.ActiveSalesInfoBot[subscription.ChannelID.String] = map[string]string{
+					"address": subscription.Address.String, "blockchain": subscription.Blockchain,
+				}
+
+				config.ActiveSalesInfoMux.Unlock()
 			}()
 		}
 	}

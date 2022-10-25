@@ -12,6 +12,9 @@ import (
 
 func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
+	defer config.ActiveSalesMux.Unlock()
+	defer config.ActiveAllSalesMux.Unlock()
+	defer config.ActiveSalesInfoMux.Unlock()
 
 	if optionsMap["channel"] != nil {
 		channel := optionsMap["channel"].ChannelValue(discordSession)
@@ -62,6 +65,7 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 
 		go sub.DeactivateChannelSubscriptions()
 	} else {
+
 		err := discordSession.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
@@ -74,27 +78,33 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 		}
 
 		go models.Subscriptions{}.DeactivateAllSubscriptions()
-
-		config.ShutDownWS()
-
-		if !config.ActiveSalesMux.TryLock() {
-			config.ActiveSalesMux.Unlock()
-			config.ActiveSalesMux.Lock()
-		}
-		if !config.ActiveAllSalesMux.TryLock() {
-			config.ActiveAllSalesMux.Unlock()
-			config.ActiveAllSalesMux.Lock()
-		}
-
-		// Delete Global variables
-		config.ActiveAllSalesKeys = nil
-		go maps.Clear(config.ActiveAllSales)
-		go maps.Clear(config.ActiveSales)
+		StopAllBots()
 
 		SendChannelSetupFollowUp("Done stopping bots for all channels", discordSession, interaction)
 
 	}
 
-	defer config.ActiveSalesMux.Unlock()
-	defer config.ActiveAllSalesMux.Unlock()
+}
+
+func StopAllBots() {
+	config.ShutDownWS()
+
+	if !config.ActiveSalesMux.TryLock() {
+		config.ActiveSalesMux.Unlock()
+		config.ActiveSalesMux.Lock()
+	}
+	if !config.ActiveAllSalesMux.TryLock() {
+		config.ActiveAllSalesMux.Unlock()
+		config.ActiveAllSalesMux.Lock()
+	}
+	if !config.ActiveSalesInfoMux.TryLock() {
+		config.ActiveSalesInfoMux.Unlock()
+		config.ActiveSalesInfoMux.Lock()
+	}
+
+	// Delete Global variables
+	config.ActiveAllSalesKeys = nil
+	go maps.Clear(config.ActiveAllSales)
+	go maps.Clear(config.ActiveSales)
+	go maps.Clear(config.ActiveSalesInfoBot)
 }

@@ -23,6 +23,7 @@ func sendPanicMessage(panicTable [][]string, discordSession *discordgo.Session) 
 
 	_, err := discordSession.ChannelMessageSend(config.PanicChannelID, msg)
 	if err != nil {
+		log.Println(err)
 		log.Println("Error Sending Panic message")
 	}
 

@@ -6,13 +6,12 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"strings"
 )
 
 func SetUpInfoBotHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	channel, address, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["contract_address"].StringValue(), optionsMap["blockchain"].StringValue()
+	channel, address, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["collection_address"].StringValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Enable Channel:%s \t to accept commands volume, floor_price, last_trades. for Contract Address: %s", channel.Name, address)
@@ -27,10 +26,10 @@ func SetUpInfoBotHandler(discordSession *discordgo.Session, interaction *discord
 		panic(err)
 	}
 
-	address = strings.ToUpper(address)
 	//Add Details to Subscriptions in DB
+	//Subscription can currently accommodate
 	models.Subscriptions{
-		Command:    "sales",
+		Command:    "set_up_info",
 		Blockchain: blockchain,
 		ChannelID:  sql.NullString{String: channel.ID, Valid: true},
 		Address:    sql.NullString{String: address, Valid: true},

@@ -36,7 +36,7 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 			channelID := channel.ChannelValue(discordSession).ID
 			modifiedAddress := strings.ToUpper(address.StringValue())
 
-			subs.ChannelID, subs.Address, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: modifiedAddress, Valid: true}, blockchain
+			subs.ChannelID, subs.Address, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: address.StringValue(), Valid: true}, blockchain
 			go subs.UnsubscribeChannelSalesUpdates()
 
 			go func() {
@@ -50,7 +50,7 @@ func SalesStopHandler(discordSession *discordgo.Session, interaction *discordgo.
 				}
 			}()
 
-			message = fmt.Sprintf("Deactivated Sales Subscription for Contract Address : %s  on Channel: %s", modifiedAddress, channel.Name)
+			message = fmt.Sprintf("Deactivated Sales Subscription for Contract Address : %s  on Channel: %s", address.StringValue(), channel.Name)
 		}
 	}
 	defer config.ActiveSalesMux.Unlock()

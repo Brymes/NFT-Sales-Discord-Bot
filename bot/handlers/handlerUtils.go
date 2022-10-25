@@ -1,6 +1,14 @@
 package handlers
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"github.com/bwmarrin/discordgo"
+)
+
+var currencies = map[string]string{
+	"ethereum": "ETH",
+	"astar":    "SOL",
+	"solana":   "ASTR",
+}
 
 func ParseCommandOptions(interaction *discordgo.InteractionCreate) map[string]*discordgo.ApplicationCommandInteractionDataOption {
 	// Access options in the order provided by the user.
@@ -22,8 +30,8 @@ func SendChannelSetupFollowUp(message string, discordSession *discordgo.Session,
 	}
 }
 
-func SendComplexFollowUp(followUp discordgo.WebhookParams, discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
-	_, err := discordSession.FollowupMessageCreate(interaction.Interaction, true, &followUp)
+func SendComplexMessage(followUp discordgo.MessageSend, discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
+	_, err := discordSession.ChannelMessageSendComplex(interaction.ChannelID, &followUp)
 	if err != nil {
 		panic("Error Sending FollowUp Message " + err.Error())
 	}
