@@ -6,6 +6,7 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"strings"
 	"time"
 )
 
@@ -48,10 +49,9 @@ func VolumeHandler(discordSession *discordgo.Session, interaction *discordgo.Int
 func createVolumeMessage(payload services.VolumeAPIResponse, blockchain string) *discordgo.MessageEmbed {
 	scanLink := utils.GetScanLink("address", payload.Address, blockchain)
 
-	title := fmt.Sprintf("Volume of %s is  %f", payload.Collection, payload.Volume)
+	title := fmt.Sprintf("Volume of %s is  %f %s", payload.Collection, payload.Volume, currencies[strings.ToLower(blockchain)])
 
 	embed := &discordgo.MessageEmbed{
-		Author:      &discordgo.MessageEmbedAuthor{},
 		Color:       0x5f3267,
 		Title:       title,
 		Description: "NFT Discord Bot Floor Price Response",
@@ -62,7 +62,7 @@ func createVolumeMessage(payload services.VolumeAPIResponse, blockchain string) 
 				Inline: false,
 			}, {
 				Name:   "Collection Address",
-				Value:  scanLink,
+				Value:  utils.CreateHyperLink(payload.Address, scanLink),
 				Inline: true,
 			}, {
 				Name:   "Collection 24h Volume",

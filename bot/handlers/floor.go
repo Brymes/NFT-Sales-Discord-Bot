@@ -42,7 +42,6 @@ func createFloorMessage(payload services.Floor, blockchain string) *discordgo.Me
 	title := fmt.Sprintf("Floor Price of %s is  %f", payload.Volume.Collection, payload.FloorPrice.FloorPrice)
 
 	embed := &discordgo.MessageEmbed{
-		Author:      &discordgo.MessageEmbedAuthor{},
 		Color:       0x5f3267,
 		Title:       title,
 		Description: "NFT Discord Bot Floor Price Response",
@@ -53,7 +52,7 @@ func createFloorMessage(payload services.Floor, blockchain string) *discordgo.Me
 				Inline: false,
 			}, {
 				Name:   "Collection Address",
-				Value:  etherScanLink,
+				Value:  utils.CreateHyperLink(payload.Volume.Address, etherScanLink),
 				Inline: true,
 			}, {
 				Name:   "Floor Price",

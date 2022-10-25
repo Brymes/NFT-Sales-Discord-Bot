@@ -70,3 +70,7 @@ func RemoveArrayDuplicates(arr []string) []string {
 
 	return result
 }
+
+func CreateHyperLink(text, url string) string {
+	return fmt.Sprintf("[%s](%s)", text, url)
+}

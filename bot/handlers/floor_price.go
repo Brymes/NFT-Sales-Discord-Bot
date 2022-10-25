@@ -6,6 +6,7 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"strings"
 	"time"
 )
 
@@ -49,18 +50,17 @@ func createFloorPriceMessage(payload services.FloorPriceResponse, address, block
 	scanLink := utils.GetScanLink("address", address, blockchain)
 
 	embed := &discordgo.MessageEmbed{
-		Author:      &discordgo.MessageEmbedAuthor{},
 		Color:       0x5f3267,
 		Title:       "Floor Price",
 		Description: "NFT Discord Bot Floor Price Response",
 		Fields: []*discordgo.MessageEmbedField{
 			{
 				Name:   "Collection Address",
-				Value:  scanLink,
+				Value:  utils.CreateHyperLink(address, scanLink),
 				Inline: true,
 			}, {
 				Name:   "Collection FloorPrice",
-				Value:  fmt.Sprintf("%f", payload.FloorPrice),
+				Value:  fmt.Sprintf("%f %s", payload.FloorPrice, currencies[strings.ToLower(blockchain)]),
 				Inline: true,
 			},
 		},

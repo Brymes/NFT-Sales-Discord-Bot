@@ -86,22 +86,21 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 	title := fmt.Sprintf("NFT Sale @ %s on %s", price, eventResponse.Exchange)
 
 	embed := &discordgo.MessageEmbed{
-		Author:      &discordgo.MessageEmbedAuthor{},
 		Color:       0x5f3267,
 		Title:       title,
 		Description: "NFT Discord Bot Sales Notification",
 		Fields: []*discordgo.MessageEmbedField{
 			{
 				Name:   "Collection Name",
-				Value:  marketPlaceLink,
+				Value:  utils.CreateHyperLink(eventResponse.NFT.NFTClass.Name, marketPlaceLink),
 				Inline: false,
 			}, {
 				Name:   "Seller Address",
-				Value:  sellerAddress,
+				Value:  utils.CreateHyperLink(eventResponse.FromAddress, sellerAddress),
 				Inline: true,
 			}, {
 				Name:   "Buyer Address",
-				Value:  buyersAddress,
+				Value:  utils.CreateHyperLink(eventResponse.ToAddress, buyersAddress),
 				Inline: true,
 			}, {
 				Name:   "Price",
@@ -116,8 +115,8 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 				Value:  eventResponse.Timestamp.Format(time.RFC3339),
 				Inline: true,
 			}, {
-				Name:   "TxHash",
-				Value:  txHash,
+				Name:   "Transaction Hash",
+				Value:  utils.CreateHyperLink(eventResponse.TxHash, txHash),
 				Inline: true,
 			},
 		},

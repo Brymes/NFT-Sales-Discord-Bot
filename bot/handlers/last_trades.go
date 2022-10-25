@@ -37,7 +37,7 @@ func LastTradesHandler(discordSession *discordgo.Session, interaction *discordgo
 	}
 
 	responses := services.LastTradesAPI(payload["address"], payload["blockchain"])
-	for index, response := range responses {
+	for index, response := range responses[:10] {
 		embedMsg := createLastTradesMessage(response, payload["blockchain"], payload["address"], index)
 		_, err = config.DiscordBot.ChannelMessageSendEmbed(interaction.ChannelID, embedMsg)
 		if err != nil {
@@ -51,10 +51,9 @@ func createLastTradesMessage(payload services.LastTradesAPIResponse, blockchain,
 	scanLink := utils.GetScanLink("address", address, blockchain)
 	price := fmt.Sprintf("%v %s", utils.ConvertDecimalsToCurrency(int64(payload.Price), payload.Currency.Decimals), payload.Currency.Name)
 
-	title := fmt.Sprintf("Recent Trades of %s: No. %d ", payload.Name, count)
+	title := fmt.Sprintf("Recent Trades of %s: No. %d ", payload.Name, count+1)
 
 	embed := &discordgo.MessageEmbed{
-		Author:      &discordgo.MessageEmbedAuthor{},
 		Color:       0x5f3267,
 		Title:       title,
 		Description: "NFT Discord Bot Floor Price Response",
@@ -65,7 +64,7 @@ func createLastTradesMessage(payload services.LastTradesAPIResponse, blockchain,
 				Inline: false,
 			}, {
 				Name:   "Collection Address",
-				Value:  scanLink,
+				Value:  utils.CreateHyperLink(address, scanLink),
 				Inline: true,
 			}, {
 				Name:   "Price",
@@ -77,11 +76,11 @@ func createLastTradesMessage(payload services.LastTradesAPIResponse, blockchain,
 				Inline: true,
 			}, {
 				Name:   "Seller Address",
-				Value:  utils.GetScanLink("address", payload.FromAddress, blockchain),
+				Value:  utils.CreateHyperLink(payload.FromAddress, utils.GetScanLink("address", payload.FromAddress, blockchain)),
 				Inline: true,
 			}, {
 				Name:   "Buyer Address",
-				Value:  utils.GetScanLink("address", payload.ToAddress, blockchain),
+				Value:  utils.CreateHyperLink(payload.ToAddress, utils.GetScanLink("address", payload.ToAddress, blockchain)),
 				Inline: true,
 			}, {
 				Name:   "MarketPlace",
@@ -93,7 +92,7 @@ func createLastTradesMessage(payload services.LastTradesAPIResponse, blockchain,
 				Inline: true,
 			}, {
 				Name:   "TxHash",
-				Value:  utils.GetScanLink("transaction", payload.TxHash, blockchain),
+				Value:  utils.CreateHyperLink(payload.TxHash, utils.GetScanLink("transaction", payload.TxHash, blockchain)),
 				Inline: true,
 			},
 		},
