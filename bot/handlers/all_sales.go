@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"sort"
+	"strings"
 )
 
 func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -17,7 +18,7 @@ func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.I
 	channel, threshold, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["threshold"].FloatValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
-	message := fmt.Sprintf("Setup Channel:%s \t to receive updates for Contract Address: %v", channel.Name, threshold)
+	message := fmt.Sprintf("Setup Channel : %s  to receive updates for Sales above price threshold : %f %s", channel.Name, threshold, currencies[strings.ToLower(blockchain)])
 	err := discordSession.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{

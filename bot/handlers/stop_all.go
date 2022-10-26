@@ -87,7 +87,7 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 }
 
 func StopAllBots() {
-	config.ShutDownWS()
+	go config.ShutDownWS()
 
 	if !config.ActiveSalesMux.TryLock() {
 		config.ActiveSalesMux.Unlock()
@@ -104,7 +104,7 @@ func StopAllBots() {
 
 	// Delete Global variables
 	config.ActiveAllSalesKeys = nil
-	go maps.Clear(config.ActiveAllSales)
-	go maps.Clear(config.ActiveSales)
-	go maps.Clear(config.ActiveSalesInfoBot)
+	maps.Clear(config.ActiveAllSales)
+	maps.Clear(config.ActiveSales)
+	maps.Clear(config.ActiveSalesInfoBot)
 }
