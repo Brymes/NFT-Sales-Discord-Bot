@@ -6,6 +6,7 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"math"
 	"time"
 )
 
@@ -49,14 +50,13 @@ func LastTradesHandler(discordSession *discordgo.Session, interaction *discordgo
 
 func createLastTradesMessage(payload services.LastTradesAPIResponse, blockchain, address string, count int) *discordgo.MessageEmbed {
 	scanLink := utils.GetScanLink("address", address, blockchain)
-	price := fmt.Sprintf("%v %s", utils.ConvertDecimalsToCurrency(int64(payload.Price), payload.Currency.Decimals), payload.Currency.Name)
-
+	price := fmt.Sprintf("%v %s", math.Round(payload.Price*100)/100, payload.Currency.Name)
 	title := fmt.Sprintf("Recent Trades of %s: No. %d ", payload.Name, count+1)
 
 	embed := &discordgo.MessageEmbed{
 		Color:       0x5f3267,
 		Title:       title,
-		Description: "NFT Discord Bot Floor Price Response",
+		Description: "NFT Discord Bot Last Trades",
 		Fields: []*discordgo.MessageEmbedField{
 			{
 				Name:   "Collection Name",

@@ -6,6 +6,7 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"strings"
 	"time"
 )
 
@@ -56,15 +57,15 @@ func createFloorMessage(payload services.Floor, blockchain string) *discordgo.Me
 				Inline: true,
 			}, {
 				Name:   "Floor Price",
-				Value:  fmt.Sprintf("%f ETH", payload.FloorPrice.FloorPrice),
+				Value:  fmt.Sprintf("%f %s", payload.FloorPrice.FloorPrice, currencies[strings.ToLower(blockchain)]),
 				Inline: false,
 			}, {
 				Name:   "Moving Average Floor Price",
-				Value:  fmt.Sprintf("%f ETH", payload.FloorPrice.FloorPrice),
+				Value:  fmt.Sprintf("%f %s", payload.FloorPrice.FloorPrice, currencies[strings.ToLower(blockchain)]),
 				Inline: false,
 			}, {
 				Name:   "24h Volume",
-				Value:  fmt.Sprintf("%f ETH", payload.Volume.Volume),
+				Value:  fmt.Sprintf("%f %s", payload.Volume.Volume, currencies[strings.ToLower(blockchain)]),
 				Inline: false,
 			},
 		},
