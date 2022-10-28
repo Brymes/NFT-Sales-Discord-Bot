@@ -5,9 +5,10 @@ import (
 	"DIA-NFT-Sales-Bot/services"
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"math"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func LastTradesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -97,6 +98,7 @@ func createLastTradesMessage(payload services.LastTradesAPIResponse, blockchain,
 			},
 		},
 		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
+		Footer:    &config.MessageFooter,
 	}
 
 	return embed

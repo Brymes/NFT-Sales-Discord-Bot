@@ -4,10 +4,11 @@ import (
 	"DIA-NFT-Sales-Bot/config"
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"strings"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func StartEventWS() {
@@ -122,6 +123,7 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 		},
 		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
 		//Timestamp: eventResponse.Timestamp.Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
+		Footer: &config.MessageFooter,
 	}
 
 	_, err := config.DiscordBot.ChannelMessageSendEmbed(channelID, embed)

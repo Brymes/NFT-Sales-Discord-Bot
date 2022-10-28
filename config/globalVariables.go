@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"gorm.io/gorm"
 	"os"
@@ -30,6 +31,11 @@ var (
 
 	// PanicChannelID Variable to Hold ChannelID to forward all errors
 	PanicChannelID string
+
+	MessageFooter = discordgo.MessageEmbedFooter{
+		Text:    fmt.Sprintf("[%s](%s)", "Powered by DIA DATA", "https://www.diadata.org"),
+		IconURL: "https://www.diadata.org",
+	}
 )
 
 func ShutDownWS() {

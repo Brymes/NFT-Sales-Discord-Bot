@@ -5,9 +5,11 @@ import (
 	"DIA-NFT-Sales-Bot/services"
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
+	"math"
 	"strings"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func FloorPriceHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -48,6 +50,7 @@ func FloorPriceHandler(discordSession *discordgo.Session, interaction *discordgo
 
 func createFloorPriceMessage(payload services.FloorPriceResponse, address, blockchain string) *discordgo.MessageEmbed {
 	scanLink := utils.GetScanLink("address", address, blockchain)
+	price := fmt.Sprintf("%f %s", math.Round(payload.FloorPrice*100)/100, currencies[strings.ToLower(blockchain)])
 
 	embed := &discordgo.MessageEmbed{
 		Color:       0x5f3267,
@@ -60,11 +63,12 @@ func createFloorPriceMessage(payload services.FloorPriceResponse, address, block
 				Inline: true,
 			}, {
 				Name:   "Collection FloorPrice",
-				Value:  fmt.Sprintf("%f %s", payload.FloorPrice, currencies[strings.ToLower(blockchain)]),
+				Value:  price,
 				Inline: true,
 			},
 		},
 		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
+		Footer:    &config.MessageFooter,
 	}
 
 	return embed
