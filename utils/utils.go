@@ -28,7 +28,7 @@ func GetScanLink(linkType, payload, blockchain string) string {
 	linkType = strings.ToLower(linkType)
 	blockchain = strings.ToLower(blockchain)
 	chainUrls := ChainURLMap[blockchain]
-	return fmt.Sprintf("%s/%s", chainUrls[linkType], payload)
+	return fmt.Sprintf("<%s/%s>", chainUrls[linkType], payload)
 }
 
 var BaseMarketPlaceURL = map[string]string{
@@ -41,7 +41,7 @@ var BaseMarketPlaceURL = map[string]string{
 func GetMarketPlaceLink(marketPlace, collectionAddress, tokenID string) string {
 	marketPlaceURL, match := BaseMarketPlaceURL[strings.ToLower(marketPlace)]
 	if match {
-		return fmt.Sprintf("%s/%s/%s", marketPlaceURL, collectionAddress, tokenID)
+		return fmt.Sprintf("<%s/%s/%s>", marketPlaceURL, collectionAddress, tokenID)
 	}
 	return ""
 }

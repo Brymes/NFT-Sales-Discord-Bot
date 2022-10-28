@@ -2,7 +2,6 @@ package config
 
 import (
 	"context"
-	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"gorm.io/gorm"
 	"os"
@@ -33,7 +32,7 @@ var (
 	PanicChannelID string
 
 	MessageFooter = discordgo.MessageEmbedFooter{
-		Text:    fmt.Sprintf("[%s](%s)", "Powered by DIA DATA", "https://www.diadata.org"),
+		Text:    "Powered by DIA DATA",
 		IconURL: "https://www.diadata.org",
 	}
 )
@@ -47,8 +46,8 @@ func ShutDownWS() {
 func InitPanicChannel() {
 	channel := os.Getenv("PANIC_CHANNEL")
 
+	PanicChannelID = "1025726821733515314"
 	if channel == "" {
-		PanicChannelID = "1025726821733515314"
 	} else {
 		PanicChannelID = channel
 	}

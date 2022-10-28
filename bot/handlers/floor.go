@@ -62,7 +62,7 @@ func createFloorMessage(payload services.Floor, blockchain string) *discordgo.Me
 				Inline: false,
 			}, {
 				Name:   "Moving Average Floor Price",
-				Value:  fmt.Sprintf("%f %s", payload.FloorPrice.FloorPrice, currencies[strings.ToLower(blockchain)]),
+				Value:  fmt.Sprintf("%f %s", payload.MA.MovingAverageFloorPrice, currencies[strings.ToLower(blockchain)]),
 				Inline: false,
 			}, {
 				Name:   "24h Volume",
