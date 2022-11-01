@@ -16,12 +16,23 @@ type FloorPriceResponse struct {
 type MovingAverageAPIResponse struct {
 	MovingAverageFloorPrice float64 `json:"Moving_Average_Floor_Price"`
 }
-
 type VolumeAPIResponse struct {
-	Collection string  `json:"Collection"`
-	Volume     float64 `json:"Volume"`
-	Trades     int     `json:"Trades"`
-	Address    string  `json:"Address"`
+	Collection   string    `json:"Collection"`
+	Floor        float64   `json:"Floor"`
+	Volume       float64   `json:"Volume"`
+	Trades       int       `json:"Trades"`
+	FloorChange  float64   `json:"FloorChange"`
+	VolumeChange float64   `json:"VolumeChange"`
+	TradesChange float64   `json:"TradesChange"`
+	Address      string    `json:"Address"`
+	Blockchain   string    `json:"Blockchain"`
+	Time         time.Time `json:"Time"`
+	Source       string    `json:"Source"`
+	Exchanges    []struct {
+		Exchange  string  `json:"Exchange"`
+		NumTrades int     `json:"NumTrades"`
+		Volume    float64 `json:"Volume"`
+	} `json:"Exchanges"`
 }
 
 type Floor struct {

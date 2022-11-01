@@ -38,7 +38,7 @@ func VolumeHandler(discordSession *discordgo.Session, interaction *discordgo.Int
 		panic(err)
 	}
 
-	response := services.VolumeAPI(payload["address"], payload["blockchain"])
+	response := services.VolumeAPI(payload["address"], payload["blockchain"], "")
 	embedMsg := createVolumeMessage(response, payload["blockchain"])
 
 	_, err = config.DiscordBot.ChannelMessageSendEmbed(interaction.ChannelID, embedMsg)

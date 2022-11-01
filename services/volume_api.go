@@ -8,16 +8,17 @@ import (
 	"time"
 )
 
-func VolumeAPI(address, blockchain string) (response VolumeAPIResponse) {
+func VolumeAPI(address, blockchain, url string) (response VolumeAPIResponse) {
 	var (
-		url        string
 		bodyCloser io.ReadCloser
 		body       []byte
 		err        error
 	)
 	response = VolumeAPIResponse{}
 
-	url = fmt.Sprintf("https://api.diadata.org/v1/NFTVolume/%s/%s?starttime=%v&endtime=%v", blockchain, address, time.Now().Add(-(24 * time.Hour)).Unix(), time.Now().Unix())
+	if url == "" {
+		url = fmt.Sprintf("https://api.diadata.org/v1/NFTVolume/%s/%s?starttime=%v&endtime=%v", blockchain, address, time.Now().Add(-(24 * time.Hour)).Unix(), time.Now().Unix())
+	}
 
 	bodyCloser, body = MakeRequest(url)
 	err = json.Unmarshal(body, &response)
