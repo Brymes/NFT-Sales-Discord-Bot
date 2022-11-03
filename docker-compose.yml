@@ -1,12 +1,11 @@
 version: '3.3'
 
 services:
-  nftSalesBot:
-    container_name: nftSalesBot
+  my-nft-sales-tracker:
+    container_name: my-nft-sales-tracker
     build: .
+    network_mode: "host"
     restart: always
-    depends_on:
-      - cache
     environment:
       DISCORD_BOT_TOKEN: ""
       DB_HOST: ""
