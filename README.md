@@ -79,6 +79,3 @@ sudo docker run -d -t -i --name my-nft-sales-tracker -it --net=host \
 -e PANIC_CHANNEL="<YOUR_PANIC_CHANNEL_ID>" \
 brymes/discord-nft-sales-tracker:stable 
 ```
-
-Copyright © 2022 TACBIZ Development (Timothy Odebunmi).  
-Covered by MIT License.
