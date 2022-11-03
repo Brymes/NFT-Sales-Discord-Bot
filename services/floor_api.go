@@ -41,9 +41,9 @@ type Floor struct {
 	FloorPrice FloorPriceResponse
 }
 
-func FloorPriceAPI(contractAddress string) (response Floor) {
+func FloorPriceAPI(contractAddress, blockchain string) (response Floor) {
 	var (
-		urls       = ParseURLs(contractAddress)
+		urls       = ParseURLs(contractAddress, blockchain)
 		bodyCloser io.ReadCloser
 		body       []byte
 		err        error
@@ -110,35 +110,12 @@ func MakeRequest(url string) (io.ReadCloser, []byte) {
 
 }
 
-func ParseURLs(address string) map[string]string {
+func ParseURLs(address, blockchain string) map[string]string {
 	urls := map[string]string{}
 
-	urls["floorPrice"] = fmt.Sprintf("https://api.diadata.org/v1/NFTFloor/Ethereum/%s", address)
-	urls["movingAverage"] = fmt.Sprintf("https://api.diadata.org/v1/NFTFloorMA/Ethereum/%s?floorWindow=86400", address)
-	urls["volume"] = fmt.Sprintf("https://api.diadata.org/v1/NFTVolume/Ethereum/%s?starttime=%v&endtime=%v", address, time.Now().Add(-(24 * time.Hour)).Unix(), time.Now().Unix())
+	urls["floorPrice"] = fmt.Sprintf("https://api.diadata.org/v1/NFTFloor/%s/%s", blockchain, address)
+	urls["movingAverage"] = fmt.Sprintf("https://api.diadata.org/v1/NFTFloorMA/%s/%s?floorWindow=86400", blockchain, address)
+	urls["volume"] = fmt.Sprintf("https://api.diadata.org/v1/NFTVolume/%s/%s?starttime=%v&endtime=%v", blockchain, address, time.Now().Add(-(24 * time.Hour)).Unix(), time.Now().Unix())
 
 	return urls
-}
-
-func FloorAPI(address, blockchain string) (response FloorPriceResponse) {
-	var (
-		url        string
-		bodyCloser io.ReadCloser
-		body       []byte
-		err        error
-	)
-	response = FloorPriceResponse{}
-
-	url = fmt.Sprintf("https://api.diadata.org/v1/NFTFloor/%s/%s", blockchain, address)
-
-	bodyCloser, body = MakeRequest(url)
-	err = json.Unmarshal(body, &response)
-	if err != nil {
-		errorRes := errors.New("Error reading response from Volume API" + err.Error() + "\n\n" + address + blockchain)
-		panic(errorRes)
-	}
-
-	bodyCloser.Close()
-
-	return
 }

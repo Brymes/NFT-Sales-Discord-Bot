@@ -39,8 +39,7 @@ func FloorPriceHandler(discordSession *discordgo.Session, interaction *discordgo
 		panic(err)
 	}
 
-	url := fmt.Sprintf("https://api.diadata.org/v1/NFTVolume/%s/%s", payload["address"], payload["blockchain"])
-	response := services.VolumeAPI(payload["address"], payload["blockchain"], url)
+	response := services.FloorPriceAPI(payload["address"], payload["blockchain"])
 	embedMsg := createFloorPriceMessage(response, payload["address"], payload["blockchain"])
 
 	_, err = config.DiscordBot.ChannelMessageSendEmbed(interaction.ChannelID, embedMsg)
@@ -49,9 +48,10 @@ func FloorPriceHandler(discordSession *discordgo.Session, interaction *discordgo
 	}
 }
 
-func createFloorPriceMessage(payload services.VolumeAPIResponse, address, blockchain string) *discordgo.MessageEmbed {
+func createFloorPriceMessage(payload services.Floor, address, blockchain string) *discordgo.MessageEmbed {
 	scanLink := utils.GetScanLink("address", address, blockchain)
-	price := fmt.Sprintf("%f %s", math.Round(payload.Floor*100)/100, currencies[strings.ToLower(blockchain)])
+	rounded := math.Round(payload.FloorPrice.FloorPrice*100) / 100
+	price := fmt.Sprintf("%v %s", rounded, currencies[strings.ToLower(blockchain)])
 
 	embed := &discordgo.MessageEmbed{
 		Color:       0x5f3267,
@@ -60,7 +60,7 @@ func createFloorPriceMessage(payload services.VolumeAPIResponse, address, blockc
 		Fields: []*discordgo.MessageEmbedField{
 			{
 				Name:   "Collection Name",
-				Value:  payload.Collection,
+				Value:  payload.Volume.Collection,
 				Inline: false,
 			}, {
 				Name:   "Collection Address",
