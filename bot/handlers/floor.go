@@ -5,6 +5,7 @@ import (
 	"DIA-NFT-Sales-Bot/services"
 	"DIA-NFT-Sales-Bot/utils"
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -29,7 +30,7 @@ func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.Inte
 		panic(err)
 	}
 
-	response := services.FloorPriceAPI(address)
+	response := services.FloorPriceAPI(address, blockchain)
 	embedMsg := createFloorMessage(response, blockchain)
 
 	_, err = config.DiscordBot.ChannelMessageSendEmbed(interaction.ChannelID, embedMsg)
@@ -42,6 +43,8 @@ func createFloorMessage(payload services.Floor, blockchain string) *discordgo.Me
 	etherScanLink := utils.GetScanLink("address", payload.Volume.Address, blockchain)
 
 	title := fmt.Sprintf("Floor Price of %s is  %f", payload.Volume.Collection, payload.FloorPrice.FloorPrice)
+	rounded := math.Round(payload.FloorPrice.FloorPrice*100) / 100
+	price := fmt.Sprintf("%v %s", rounded, currencies[strings.ToLower(blockchain)])
 
 	embed := &discordgo.MessageEmbed{
 		Color:       0x5f3267,
@@ -58,7 +61,7 @@ func createFloorMessage(payload services.Floor, blockchain string) *discordgo.Me
 				Inline: true,
 			}, {
 				Name:   "Floor Price",
-				Value:  fmt.Sprintf("%f %s", payload.FloorPrice.FloorPrice, currencies[strings.ToLower(blockchain)]),
+				Value:  price,
 				Inline: false,
 			}, {
 				Name:   "Moving Average Floor Price",
