@@ -63,21 +63,21 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "collection_address",
+					Name:        "Collection address",
 					Description: "Contract Address to filter transactions from",
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
 				},
 				{
 					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
+					Name:         "Channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     true,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
+					Name:        "Blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
 					Choices:     BlockChainChoices,
 					Required:    true,
@@ -90,21 +90,21 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "contract_address",
+					Name:        "Collection address",
 					Description: "Contract Address to filter transactions from",
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
 				},
 				{
 					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
+					Name:         "Channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     true,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
+					Name:        "Blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
 					Choices:     BlockChainChoices,
 					Required:    true,
@@ -117,20 +117,20 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Type:        discordgo.ApplicationCommandOptionBoolean,
-					Name:        "all",
+					Name:        "All",
 					Description: "Select True to stop all sales bots",
 					Required:    true,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "address",
+					Name:        "Collection address",
 					Description: "Contract Address to filter transactions from",
 					Required:    false,
 					MinLength:   &ContractAddressMinLength,
 				},
 				{
 					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
+					Name:         "Channel",
 					Description:  "Channel to stop updating",
 					ChannelTypes: TextChannelType,
 					Required:     false,
@@ -144,14 +144,14 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "address",
+					Name:        "Collection address",
 					Description: "Contract Address to retrieve floor price",
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
+					Name:        "Blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
 					Choices:     BlockChainChoices,
 					Required:    true,
@@ -164,20 +164,20 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Type:        discordgo.ApplicationCommandOptionNumber,
-					Name:        "threshold",
+					Name:        "Threshold",
 					Description: "Threshold in ETH up to 2 decimals e.g 4.55",
 					Required:    true,
 				},
 				{
 					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
+					Name:         "Channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     true,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
+					Name:        "Blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
 					Choices:     BlockChainChoices,
 					Required:    true,
@@ -190,26 +190,26 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Type:        discordgo.ApplicationCommandOptionBoolean,
-					Name:        "all",
+					Name:        "All",
 					Description: "Select True to stop all threshold bots",
 					Required:    true,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
+					Name:        "Blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
 					Choices:     BlockChainChoices,
 					Required:    true,
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionNumber,
-					Name:        "threshold",
+					Name:        "Threshold",
 					Description: "Threshold in ETH up to 2 decimals e.g 4.55",
 					Required:    false,
 				},
 				{
 					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
+					Name:         "Channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     false,
@@ -222,7 +222,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
+					Name:         "Channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     false,
