@@ -14,7 +14,7 @@ import (
 func SalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	channel, address, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["contract_address"].StringValue(), optionsMap["blockchain"].StringValue()
+	channel, address, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["collection_address"].StringValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Setup Channel:%s \t to receive sales updates for Contract Address: %s", channel.Name, address)
