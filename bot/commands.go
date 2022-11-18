@@ -60,7 +60,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 		{
 			Name:        "set_up_info_bot",
-			Description: "Set up bot that returns volume, floor_price and last_trades information with single command for a predetermined NFT collection",
+			Description: "Set up bot for volume, floor_price and last_trades information with single command for an NFT collection",
 			Options: []*discordgo.ApplicationCommandOption{
 
 				{
