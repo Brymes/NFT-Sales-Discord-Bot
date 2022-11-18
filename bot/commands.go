@@ -92,7 +92,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "contract_address",
+					Name:        "collection_address",
 					Description: "Contract Address to filter transactions from",
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
@@ -146,7 +146,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "address",
+					Name:        "collection_address",
 					Description: "Contract Address to retrieve floor price",
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
