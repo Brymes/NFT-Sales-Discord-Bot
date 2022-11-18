@@ -1,8 +1,9 @@
 package bot
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"log"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var (
@@ -26,10 +27,11 @@ var (
 		}, {
 			Name:  "Ethereum",
 			Value: "Ethereum",
-		}, {
-			Name:  "Solana",
-			Value: "Solana",
 		},
+		// {
+		// 	Name:  "Solana",
+		// 	Value: "Solana",
+		// },
 	}
 )
 
