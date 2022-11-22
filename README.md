@@ -4,7 +4,7 @@
     <strong>
         A simple discord bot for tracking sales from specific NFT collections as well as tracking sales via Thresholds and other utility information
     </strong><br><br>
-    <a href="https://discord.com/api/oauth2/authorize?client_id=1039888083442749481&permissions=0&scope=bot"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="45" /></a>
+    <a href="http://bit.ly/3EmFRgE"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="45" /></a>
 <br>
 </div>
 
@@ -45,7 +45,7 @@ Slash Commands
 
 Click this button the bot to your Server
 
-<a href="https://bit.ly/3rDTqSW"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="35" /></a>
+<a href="http://bit.ly/3EmFRgE"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="35" /></a>
 
 # Docker
 
