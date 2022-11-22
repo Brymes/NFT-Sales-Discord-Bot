@@ -73,5 +73,5 @@ sudo docker run -d -t -i --name my-nft-sales-tracker -it --net=host \
 -e DB_DATABASE="<YOUR_DB_DATABASE>" \
 -e DB_PORT="<YOUR_DB_PORT>" \
 -e PANIC_CHANNEL="<YOUR_PANIC_CHANNEL_ID>" \
-brymes/discord-nft-sales-tracker:stable 
+diadata/discord-nft-sales-tracker:stable 
 ```
