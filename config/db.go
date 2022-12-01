@@ -2,15 +2,16 @@ package config
 
 import (
 	"fmt"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 	"log"
 	"os"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func InitDb() {
 	var err error
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=require",
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USERNAME"),
 		os.Getenv("DB_PASSWORD"),
