@@ -32,7 +32,7 @@ var (
 	PanicChannelID string
 
 	MessageFooter = discordgo.MessageEmbedFooter{
-		Text:    "Powered by DIA DATA",
+		Text:    "Powered by DIAdata.org",
 		IconURL: "https://www.diadata.org",
 	}
 )
