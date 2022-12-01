@@ -139,27 +139,27 @@ func RegisterCommands(discordSession *discordgo.Session) {
 // 				},
 // 			},
 // 		},
-		{
-			Name:        "floor",
-			Description: "Get floor price for any NFT collection",
-			Options: []*discordgo.ApplicationCommandOption{
+// 		{
+// 			Name:        "floor",
+// 			Description: "Get floor price for any NFT collection",
+// 			Options: []*discordgo.ApplicationCommandOption{
 
-				{
-					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "collection_address",
-					Description: "Contract Address to retrieve floor price",
-					Required:    true,
-					MinLength:   &ContractAddressMinLength,
-				},
-				{
-					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
-					Description: "Select from Astar or Ethereum",
-					Choices:     BlockChainChoices,
-					Required:    true,
-				},
-			},
-		},
+// 				{
+// 					Type:        discordgo.ApplicationCommandOptionString,
+// 					Name:        "collection_address",
+// 					Description: "Contract Address to retrieve floor price",
+// 					Required:    true,
+// 					MinLength:   &ContractAddressMinLength,
+// 				},
+// 				{
+// 					Type:        discordgo.ApplicationCommandOptionString,
+// 					Name:        "blockchain",
+// 					Description: "Select from Astar or Ethereum",
+// 					Choices:     BlockChainChoices,
+// 					Required:    true,
+// 				},
+// 			},
+// 		},
 		{
 			Name:        "all_sales",
 			Description: "Set up bot that feeds all NFT sales above the predetermined threshold",
