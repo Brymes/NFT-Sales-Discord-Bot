@@ -60,7 +60,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 		{
 			Name:        "set_up_info_bot",
-			Description: "Set up bot for volume, floor_price and last_trades information with single command for an NFT collection",
+			Description: "Set up bot for volume, floor_price and last_trades information with single command for an collection",
 			Options: []*discordgo.ApplicationCommandOption{
 
 				{
@@ -113,53 +113,53 @@ func RegisterCommands(discordSession *discordgo.Session) {
 				},
 			},
 		},
-// 		{
-// 			Name:        "sales_stop",
-// 			Description: "Stops Bot from pushing sales update from a contract address or stop all bots",
-// 			Options: []*discordgo.ApplicationCommandOption{
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionBoolean,
-// 					Name:        "all",
-// 					Description: "Select True to stop all sales bots",
-// 					Required:    true,
-// 				},
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionString,
-// 					Name:        "address",
-// 					Description: "Contract Address to filter transactions from",
-// 					Required:    false,
-// 					MinLength:   &ContractAddressMinLength,
-// 				},
-// 				{
-// 					Type:         discordgo.ApplicationCommandOptionChannel,
-// 					Name:         "channel",
-// 					Description:  "Channel to stop updating",
-// 					ChannelTypes: TextChannelType,
-// 					Required:     false,
-// 				},
-// 			},
-// 		},
-// 		{
-// 			Name:        "floor",
-// 			Description: "Get floor price for any NFT collection",
-// 			Options: []*discordgo.ApplicationCommandOption{
+		// 		{
+		// 			Name:        "sales_stop",
+		// 			Description: "Stops Bot from pushing sales update from a contract address or stop all bots",
+		// 			Options: []*discordgo.ApplicationCommandOption{
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionBoolean,
+		// 					Name:        "all",
+		// 					Description: "Select True to stop all sales bots",
+		// 					Required:    true,
+		// 				},
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionString,
+		// 					Name:        "address",
+		// 					Description: "Contract Address to filter transactions from",
+		// 					Required:    false,
+		// 					MinLength:   &ContractAddressMinLength,
+		// 				},
+		// 				{
+		// 					Type:         discordgo.ApplicationCommandOptionChannel,
+		// 					Name:         "channel",
+		// 					Description:  "Channel to stop updating",
+		// 					ChannelTypes: TextChannelType,
+		// 					Required:     false,
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name:        "floor",
+		// 			Description: "Get floor price for any NFT collection",
+		// 			Options: []*discordgo.ApplicationCommandOption{
 
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionString,
-// 					Name:        "collection_address",
-// 					Description: "Contract Address to retrieve floor price",
-// 					Required:    true,
-// 					MinLength:   &ContractAddressMinLength,
-// 				},
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionString,
-// 					Name:        "blockchain",
-// 					Description: "Select from Astar or Ethereum",
-// 					Choices:     BlockChainChoices,
-// 					Required:    true,
-// 				},
-// 			},
-// 		},
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionString,
+		// 					Name:        "collection_address",
+		// 					Description: "Contract Address to retrieve floor price",
+		// 					Required:    true,
+		// 					MinLength:   &ContractAddressMinLength,
+		// 				},
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionString,
+		// 					Name:        "blockchain",
+		// 					Description: "Select from Astar or Ethereum",
+		// 					Choices:     BlockChainChoices,
+		// 					Required:    true,
+		// 				},
+		// 			},
+		// 		},
 		{
 			Name:        "all_sales",
 			Description: "Set up bot that feeds all NFT sales above the predetermined threshold",
@@ -186,38 +186,38 @@ func RegisterCommands(discordSession *discordgo.Session) {
 				},
 			},
 		},
-// 		{
-// 			Name:        "all_sales_stop",
-// 			Description: "Stop bot for all sales above the predetermined threshold and contract address",
-// 			Options: []*discordgo.ApplicationCommandOption{
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionBoolean,
-// 					Name:        "all",
-// 					Description: "Select True to stop all threshold bots",
-// 					Required:    true,
-// 				},
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionString,
-// 					Name:        "blockchain",
-// 					Description: "Select from Astar or Ethereum",
-// 					Choices:     BlockChainChoices,
-// 					Required:    true,
-// 				},
-// 				{
-// 					Type:        discordgo.ApplicationCommandOptionNumber,
-// 					Name:        "threshold",
-// 					Description: "Threshold in ETH up to 2 decimals e.g 4.55",
-// 					Required:    false,
-// 				},
-// 				{
-// 					Type:         discordgo.ApplicationCommandOptionChannel,
-// 					Name:         "channel",
-// 					Description:  "Channel to push information of matching transactions to.",
-// 					ChannelTypes: TextChannelType,
-// 					Required:     false,
-// 				},
-// 			},
-// 		},
+		// 		{
+		// 			Name:        "all_sales_stop",
+		// 			Description: "Stop bot for all sales above the predetermined threshold and contract address",
+		// 			Options: []*discordgo.ApplicationCommandOption{
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionBoolean,
+		// 					Name:        "all",
+		// 					Description: "Select True to stop all threshold bots",
+		// 					Required:    true,
+		// 				},
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionString,
+		// 					Name:        "blockchain",
+		// 					Description: "Select from Astar or Ethereum",
+		// 					Choices:     BlockChainChoices,
+		// 					Required:    true,
+		// 				},
+		// 				{
+		// 					Type:        discordgo.ApplicationCommandOptionNumber,
+		// 					Name:        "threshold",
+		// 					Description: "Threshold in ETH up to 2 decimals e.g 4.55",
+		// 					Required:    false,
+		// 				},
+		// 				{
+		// 					Type:         discordgo.ApplicationCommandOptionChannel,
+		// 					Name:         "channel",
+		// 					Description:  "Channel to push information of matching transactions to.",
+		// 					ChannelTypes: TextChannelType,
+		// 					Required:     false,
+		// 				},
+		// 			},
+		// 		},
 		{
 			Name:        "stop_all",
 			Description: "Stops all bots from operating in the selected channel or stop all bots if channel is not provided",
@@ -235,6 +235,8 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 	log.Println("Adding commands...")
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
+	log.Println("Added commands...", len(commands))
+
 	for index, command := range commands {
 		cmd, err := discordSession.ApplicationCommandCreate(discordSession.State.User.ID, "", command)
 		if err != nil {
