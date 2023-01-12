@@ -2,10 +2,12 @@ package config
 
 import (
 	"context"
-	"github.com/bwmarrin/discordgo"
-	"gorm.io/gorm"
+	"math/big"
 	"os"
 	"sync"
+
+	"github.com/bwmarrin/discordgo"
+	"gorm.io/gorm"
 )
 
 var (
@@ -18,8 +20,8 @@ var (
 	ActiveSalesMux = &sync.Mutex{}
 
 	// ActiveAllSales Maps Threshold to A List of Channels
-	ActiveAllSales     = map[float64]map[string][]string{}
-	ActiveAllSalesKeys []float64
+	ActiveAllSales     = map[*big.Float]map[string][]string{}
+	ActiveAllSalesKeys []*big.Float
 	ActiveAllSalesMux  = &sync.Mutex{}
 
 	ActiveNftEventWS     = false
@@ -46,7 +48,7 @@ func ShutDownWS() {
 func InitPanicChannel() {
 	channel := os.Getenv("PANIC_CHANNEL")
 
-	PanicChannelID = "1025726821733515314"
+	PanicChannelID = "1062067299663761428"
 	if channel == "" {
 	} else {
 		PanicChannelID = channel

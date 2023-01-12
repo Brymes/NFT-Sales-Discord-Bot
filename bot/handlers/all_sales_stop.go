@@ -5,6 +5,7 @@ import (
 	"DIA-NFT-Sales-Bot/models"
 	"database/sql"
 	"fmt"
+	"math/big"
 
 	"github.com/bwmarrin/discordgo"
 	"golang.org/x/exp/maps"
@@ -27,7 +28,7 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 		message = "Deactivate AllSales Subscription for all Channels and Thresholds"
 
 		go maps.Clear(config.ActiveAllSales)
-		config.ActiveAllSalesKeys = []float64{}
+		config.ActiveAllSalesKeys = []*big.Float{}
 		go subs.UnsubscribeSalesUpdates()
 
 	} else {
@@ -36,7 +37,7 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 		} else {
 			channelID := channel.ChannelValue(discordSession).ID
 
-			go unsubscribeAllSales(channelID, subs, threshold.FloatValue(), blockchain)
+			go unsubscribeAllSales(channelID, subs, threshold.StringValue(), blockchain)
 
 			message = fmt.Sprintf("Deactivated AllSales Subscription for Threshold : %f ETH  on Channel: %s", threshold.FloatValue(), channel.Name)
 		}
@@ -55,16 +56,16 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 	}
 }
 
-func unsubscribeAllSales(channelID string, subs models.Subscriptions, threshold float64, blockchain string) {
+func unsubscribeAllSales(channelID string, subs models.Subscriptions, threshold string, blockchain string) {
 	subs.ChannelID, subs.Threshold, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, threshold, blockchain
 
 	go subs.UnsubscribeChannelSalesUpdates()
-
-	subscribedChannels := config.ActiveAllSales[threshold][blockchain]
+	thresholdbigInt := big.NewFloat(0)
+	subscribedChannels := config.ActiveAllSales[thresholdbigInt][blockchain]
 	for index, c := range subscribedChannels {
 		if c == channelID {
 			subscribedChannels = slices.Delete(subscribedChannels, index, index+1)
-			config.ActiveAllSales[threshold][blockchain] = subscribedChannels
+			config.ActiveAllSales[thresholdbigInt][blockchain] = subscribedChannels
 			break
 		}
 	}

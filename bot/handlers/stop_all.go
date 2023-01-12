@@ -5,6 +5,8 @@ import (
 	"DIA-NFT-Sales-Bot/models"
 	"database/sql"
 	"fmt"
+	"math/big"
+
 	"github.com/bwmarrin/discordgo"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
@@ -50,11 +52,13 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 					}
 				}
 			case "all_sales":
-				for chainName, chain := range config.ActiveAllSales[channelSub.Threshold] {
+				threshold := big.NewFloat(0)
+				threshold, _ = threshold.SetString(channelSub.Threshold)
+				for chainName, chain := range config.ActiveAllSales[threshold] {
 					for index, subChannel := range chain {
 						if subChannel == channelSub.ChannelID.String {
 							config.ActiveAllSalesMux.Lock()
-							config.ActiveAllSales[channelSub.Threshold][chainName] = slices.Delete(config.ActiveAllSales[channelSub.Threshold][chainName], index, index+1)
+							config.ActiveAllSales[threshold][chainName] = slices.Delete(config.ActiveAllSales[threshold][chainName], index, index+1)
 							break
 						}
 					}

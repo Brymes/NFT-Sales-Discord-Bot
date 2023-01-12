@@ -4,10 +4,12 @@ import (
 	"DIA-NFT-Sales-Bot/config"
 	"context"
 	"encoding/json"
-	"github.com/gorilla/websocket"
+	"fmt"
 	"log"
 	"net/url"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type NFTEvent struct {
@@ -31,7 +33,7 @@ type NFTEvent struct {
 			Symbol     string `json:"Symbol"`
 			Name       string `json:"Name"`
 			Address    string `json:"Address"`
-			Decimals   int    `json:"Decimals"`
+			Decimals   int64  `json:"Decimals"`
 			Blockchain string `json:"Blockchain"`
 		} `json:"Currency"`
 		BundleSale  bool      `json:"BundleSale"`
@@ -95,10 +97,16 @@ func ConnectToService(logger *log.Logger) {
 					config.ActiveNftEventWS = true
 				default:
 					// convert map to json
-					jsonString, _ := json.Marshal(jsonPayload)
+					jsonString, err := json.Marshal(jsonPayload)
+					if err != nil {
+						logger.Println("Error Unmarshalling to Struct")
+						logger.Println(err)
+					}
+
 					//fmt.Println(string(jsonString))
 					// convert json to struct
-					err := json.Unmarshal(jsonString, &event)
+					fmt.Printf("Event recieved %s \n", jsonString)
+					err = json.Unmarshal(jsonString, &event)
 					if err != nil {
 						logger.Println("Error Unmarshalling to Struct")
 						logger.Println(err)
