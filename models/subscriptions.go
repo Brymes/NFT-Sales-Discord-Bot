@@ -26,6 +26,19 @@ func (subscription Subscriptions) SaveSubscription() {
 	}
 }
 
+func (subscription Subscriptions) SaveTracker() {
+
+	result := config.DBClient.Model(&Subscriptions{}).Where("is_active = ? AND command = ?", true, "track_floor_price").Updates(&subscription)
+
+	if result.RowsAffected == 0 {
+		result = config.DBClient.Create(&subscription)
+	}
+	if result.Error != nil {
+		err := "Error Saving Subscription: \n" + result.Error.Error()
+		panic(err)
+	}
+}
+
 func (subscription Subscriptions) LoadChannelSubscriptions() []Subscriptions {
 	var subscriptions []Subscriptions
 

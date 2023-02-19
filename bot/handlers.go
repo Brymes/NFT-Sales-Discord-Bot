@@ -22,6 +22,7 @@ var (
 		"last_trades":       handlers.LastTradesHandler,
 		"volume":            handlers.VolumeHandler,
 		"stop_subscription": handlers.StopSubscriptionsHandler,
+		"track_floor_price": handlers.TrackFloorHandler,
 	}
 	componentHandlers = map[string]func(*discordgo.Session, *discordgo.InteractionCreate){
 		"commands_to_stop": handlers.StopSubscriptions,

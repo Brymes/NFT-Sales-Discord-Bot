@@ -31,6 +31,9 @@ var (
 	// PanicChannelID Variable to Hold ChannelID to forward all errors
 	PanicChannelID string
 
+	FloorPriceTrackerAddress string
+	FloorPriceTrackerChain   string
+
 	MessageFooter = discordgo.MessageEmbedFooter{
 		Text:    "Powered by DIA DATA",
 		IconURL: "https://www.diadata.org",

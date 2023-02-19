@@ -33,6 +33,8 @@ func InitBot() {
 
 	RegisterCommands(dg)
 
+	_, _ = dg.UserUpdate("DIA Sales Tracker", "")
+
 	config.DiscordBot = dg
 
 }
