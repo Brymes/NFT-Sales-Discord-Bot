@@ -21,6 +21,10 @@ func sendPanicMessage(panicTable [][]string, discordSession *discordgo.Session) 
 	table.Render()
 	msg := "```" + str.String() + "```"
 
+	if len(msg) > 1950 {
+		msg = msg[:1950]
+	}
+
 	_, err := discordSession.ChannelMessageSend(config.PanicChannelID, msg)
 	if err != nil {
 		log.Println(err)
