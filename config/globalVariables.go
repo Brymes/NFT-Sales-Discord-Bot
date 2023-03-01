@@ -49,7 +49,7 @@ func ShutDownWS() {
 func InitPanicChannel() {
 	channel := os.Getenv("PANIC_CHANNEL")
 
-	PanicChannelID = "1025726821733515314"
+	PanicChannelID = "1044583291942096906"
 	if channel == "" {
 	} else {
 		PanicChannelID = channel
