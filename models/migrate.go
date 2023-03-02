@@ -73,7 +73,7 @@ func LoadCurrentSubscriptions() bool {
 
 			config.ActiveSalesInfoMux.Unlock()
 		case "track_floor_price":
-			config.FloorPriceTrackerAddress, config.FloorPriceTrackerChain = subscription.Address.String, subscription.Blockchain
+			config.FloorPriceTrackerAddress, config.FloorPriceTrackerChain, config.FloorPriceTrackerGuild = subscription.Address.String, subscription.Blockchain, subscription.ChannelID.String
 
 		}
 	}

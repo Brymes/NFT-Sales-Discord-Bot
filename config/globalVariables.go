@@ -33,6 +33,7 @@ var (
 
 	FloorPriceTrackerAddress string
 	FloorPriceTrackerChain   string
+	FloorPriceTrackerGuild   string
 
 	MessageFooter = discordgo.MessageEmbedFooter{
 		Text:    "Powered by DIA DATA",

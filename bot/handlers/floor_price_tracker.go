@@ -27,15 +27,22 @@ func TrackFloorHandler(discordSession *discordgo.Session, interaction *discordgo
 		panic(err)
 	}
 
-	config.FloorPriceTrackerAddress, config.FloorPriceTrackerChain = address, blockchain
-
+	config.FloorPriceTrackerAddress = ""
 	models.Subscriptions{
 		Command: "track_floor_price",
 		Address: sql.NullString{
 			String: address,
 			Valid:  true,
 		},
+		ChannelID: sql.NullString{
+			String: interaction.GuildID,
+			Valid:  true,
+		},
 		Blockchain: blockchain,
 		Active:     true,
 	}.SaveTracker()
+
+	_ = discordSession.GuildMemberNickname(interaction.GuildID, "@me", "DIA Sales Tracker")
+	config.FloorPriceTrackerAddress, config.FloorPriceTrackerChain, config.FloorPriceTrackerGuild = address, blockchain, interaction.GuildID
+
 }

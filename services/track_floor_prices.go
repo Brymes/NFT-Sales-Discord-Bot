@@ -19,7 +19,10 @@ func TrackFloorPrices() {
 				response := FloorPriceAPI(config.FloorPriceTrackerAddress, config.FloorPriceTrackerChain)
 				rounded := math.Round(response.FloorPrice.FloorPrice*100) / 100
 				update := fmt.Sprintf("%v %s", rounded, response.Volume.Collection)
-				_, _ = config.DiscordBot.UserUpdate(update, "")
+				err := config.DiscordBot.GuildMemberNickname(config.FloorPriceTrackerGuild, "@me", update)
+				if err != nil {
+					panic(err)
+				}
 			}
 		default:
 			continue
