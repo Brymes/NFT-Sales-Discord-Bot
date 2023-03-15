@@ -40,7 +40,7 @@ func LoadCurrentSubscriptions() bool {
 
 			config.ActiveAllSalesMux.Lock()
 			threshold := big.NewFloat(0)
-			threshold, _ = threshold.SetString(subscription.Threshold)
+			threshold, _ = threshold.SetString(subscription.Threshold.String)
 
 			subscribedChannels := config.ActiveAllSales[threshold][subscription.Blockchain]
 			subscribedChannels = append(subscribedChannels, subscription.ChannelID.String)

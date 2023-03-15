@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"math/big"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -17,7 +18,7 @@ import (
 func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	channel, threshold, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["threshold"].StringValue(), optionsMap["blockchain"].StringValue()
+	channel, threshold, blockchain := optionsMap["channel"].ChannelValue(discordSession), optionsMap["threshold"].FloatValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Setup Channel : %s  to receive updates for Sales above price threshold : %f %s", channel.Name, threshold, currencies[strings.ToLower(blockchain)])
@@ -42,15 +43,13 @@ func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.I
 		Command:    "all_sales",
 		Blockchain: blockchain,
 		ChannelID:  sql.NullString{String: channel.ID, Valid: true},
-		Threshold:  threshold,
+		Threshold:  sql.NullString{String: strconv.FormatFloat(threshold, 'g', 5, 64), Valid: true},
 		Active:     true,
 	}.SaveSubscription()
 
 	thresholdbigint := big.NewFloat(0)
-	thresholdbigint, isok := thresholdbigint.SetString(threshold)
-	if !isok {
-		fmt.Printf("error threshold set %v", isok)
-	}
+	thresholdbigint = thresholdbigint.SetFloat64(threshold)
+
 	addDetailsToMap(thresholdbigint, channel.ID, blockchain)
 
 	//Follow Up has been Set up

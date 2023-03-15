@@ -53,24 +53,24 @@ func HandleAllSales(event NFTEvent) {
 	// This Handle panic is useful for if all bots are stopped and arrays/maps have been emptied
 	defer utils.HandlePanic(config.DiscordBot, "Error in All Sales Handler")
 
-	resp, _ := json.Marshal(event)
+	// resp, _ := json.Marshal(event)
 
 	price := utils.ConvertDecimalsToCurrency(event.Response.Price, event.Response.Currency.Decimals)
 
-	fmt.Printf("NFT event %s  and price is %s \n", resp, price)
+	// fmt.Printf("NFT event %s  and price is %s \n", resp, price)
 
 	config.ActiveAllSalesMux.Lock()
 	for _, elem := range config.ActiveAllSalesKeys {
-		fmt.Printf("elem is  %s  and price is %s \n", elem, price)
+		// fmt.Printf("elem is  %s  and price is %s \n", elem, price)
 
 		if price.Cmp(elem) > 0 {
-			fmt.Printf("sending to discord elem is  %s  and price is %s \n", elem, price)
+			// fmt.Printf("sending to discord elem is  %s  and price is %s \n", elem, price)
 			chains := config.ActiveAllSales[elem]
 			for _, channel := range chains[event.Response.NFT.NFTClass.Blockchain] {
 				go SendSalesMessage(event, channel)
 			}
 		} else {
-			fmt.Printf("not sending as price is %f and elem is %f and chain is %s \n", price, elem, event.Response.NFT.NFTClass.Blockchain)
+			// fmt.Printf("not sending as price is %f and elem is %f and chain is %s \n", price, elem, event.Response.NFT.NFTClass.Blockchain)
 		}
 	}
 

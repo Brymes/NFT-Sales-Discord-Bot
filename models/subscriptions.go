@@ -3,6 +3,7 @@ package models
 import (
 	"DIA-NFT-Sales-Bot/config"
 	"database/sql"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -13,7 +14,7 @@ type Subscriptions struct {
 	Blockchain string         `gorm:"column:blockchain;not null"`
 	ChannelID  sql.NullString `gorm:"column:channel_id"`
 	Address    sql.NullString `gorm:"column:address"`
-	Threshold  string         `gorm:"column:threshold"`
+	Threshold  sql.NullString `gorm:"column:threshold"`
 	All        bool           `gorm:"column:all"`
 	Active     bool           `gorm:"column:is_active"`
 }
@@ -94,6 +95,8 @@ func (subscription Subscriptions) LoadAllSubscriptions() []Subscriptions {
 		err := "Error Fetching Subscriptions by Channel: \n" + result.Error.Error()
 		panic(err)
 	}
+
+	fmt.Println("LoadAllSubscriptions", subscriptions)
 
 	return subscriptions
 }

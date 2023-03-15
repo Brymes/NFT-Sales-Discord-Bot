@@ -235,7 +235,6 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 	log.Println("Adding commands...")
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
-	log.Println("Added commands...", len(commands))
 
 	for index, command := range commands {
 		cmd, err := discordSession.ApplicationCommandCreate(discordSession.State.User.ID, "", command)
@@ -243,6 +242,8 @@ func RegisterCommands(discordSession *discordgo.Session) {
 			log.Fatalf("Cannot create '%v' command: %v", command.Name, err)
 		}
 		registeredCommands[index] = cmd
+		log.Println("Adding command", cmd.Name)
+
 	}
 	RegisteredCommands = registeredCommands
 }

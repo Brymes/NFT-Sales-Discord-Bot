@@ -57,7 +57,7 @@ func AllSalesStopHandler(discordSession *discordgo.Session, interaction *discord
 }
 
 func unsubscribeAllSales(channelID string, subs models.Subscriptions, threshold string, blockchain string) {
-	subs.ChannelID, subs.Threshold, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, threshold, blockchain
+	subs.ChannelID, subs.Threshold, subs.Blockchain = sql.NullString{String: channelID, Valid: true}, sql.NullString{String: threshold, Valid: true}, blockchain
 
 	go subs.UnsubscribeChannelSalesUpdates()
 	thresholdbigInt := big.NewFloat(0)

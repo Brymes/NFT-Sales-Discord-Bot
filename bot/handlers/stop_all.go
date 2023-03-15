@@ -53,7 +53,7 @@ func StopAllHandler(discordSession *discordgo.Session, interaction *discordgo.In
 				}
 			case "all_sales":
 				threshold := big.NewFloat(0)
-				threshold, _ = threshold.SetString(channelSub.Threshold)
+				threshold, _ = threshold.SetString(channelSub.Threshold.String)
 				for chainName, chain := range config.ActiveAllSales[threshold] {
 					for index, subChannel := range chain {
 						if subChannel == channelSub.ChannelID.String {

@@ -4,7 +4,6 @@ import (
 	"DIA-NFT-Sales-Bot/config"
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -105,7 +104,7 @@ func ConnectToService(logger *log.Logger) {
 
 					//fmt.Println(string(jsonString))
 					// convert json to struct
-					fmt.Printf("Event recieved %s \n", jsonString)
+					// fmt.Printf("Event recieved %s \n", jsonString)
 					err = json.Unmarshal(jsonString, &event)
 					if err != nil {
 						logger.Println("Error Unmarshalling to Struct")
