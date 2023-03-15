@@ -24,6 +24,7 @@ var (
 		{"/floor_price", "Get floor price for NFT Collection set via set_up_info_bot"},
 		{"/last_trades", "Get recent trades for NFT collection set via set_up_info_bot"},
 		{"/stop_subscription", "Returns modal to select commands to stop"},
+		{"/track_floor_price", "Live Update of Floor Price to Username"},
 	}
 )
 

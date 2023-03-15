@@ -219,6 +219,27 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		// 			},
 		// 		},
 		{
+			Name:        "track_floor_price",
+			Description: "Track Floor Price of specified collection and update Bot username periodically",
+			Options: []*discordgo.ApplicationCommandOption{
+
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "address",
+					Description: "Collection Address to filter transactions from",
+					Required:    true,
+					MinLength:   &ContractAddressMinLength,
+				},
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "blockchain",
+					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Choices:     BlockChainChoices,
+					Required:    true,
+				},
+			},
+		},
+		{
 			Name:        "stop_all",
 			Description: "Stops all bots from operating in the selected channel or stop all bots if channel is not provided",
 			Options: []*discordgo.ApplicationCommandOption{

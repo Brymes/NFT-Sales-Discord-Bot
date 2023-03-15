@@ -19,10 +19,12 @@ func InitMigrations() {
 
 func LoadCurrentSubscriptions() bool {
 	subscriptions := Subscriptions{}.LoadAllSubscriptions()
+	res := false
 
 	for _, subscription := range subscriptions {
 		switch subscription.Command {
 		case "sales":
+			res = true
 			config.ActiveSalesMux.Lock()
 
 			subscribedChannels := config.ActiveSales[strings.ToUpper(subscription.Address.String)][subscription.Blockchain]
@@ -37,6 +39,7 @@ func LoadCurrentSubscriptions() bool {
 			config.ActiveSalesMux.Unlock()
 
 		case "all_sales":
+			res = true
 
 			config.ActiveAllSalesMux.Lock()
 			threshold := big.NewFloat(0)
@@ -67,6 +70,7 @@ func LoadCurrentSubscriptions() bool {
 			config.ActiveAllSalesMux.Unlock()
 
 		case "set_up_info":
+			res = true
 
 			config.ActiveSalesInfoMux.Lock()
 
@@ -75,10 +79,11 @@ func LoadCurrentSubscriptions() bool {
 			}
 
 			config.ActiveSalesInfoMux.Unlock()
+		case "track_floor_price":
+			config.FloorPriceTrackerAddress, config.FloorPriceTrackerChain, config.FloorPriceTrackerGuild = subscription.Address.String, subscription.Blockchain, subscription.ChannelID.String
+
 		}
 	}
-	if len(subscriptions) > 0 {
-		return true
-	}
-	return false
+
+	return res
 }
