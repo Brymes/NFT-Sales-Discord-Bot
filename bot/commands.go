@@ -59,7 +59,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 		{
 			Name:        "change_bot_avatar",
-			Description: "SetUp bot avatar to selected image",
+			Description: "Set bot avatar to selected image",
 			Options: []*discordgo.ApplicationCommandOption{
 
 				{
