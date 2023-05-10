@@ -2,8 +2,8 @@ package models
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	log "DIA-NFT-Sales-Bot/debug"
 	"DIA-NFT-Sales-Bot/utils"
-	"log"
 	"sort"
 	"strings"
 )

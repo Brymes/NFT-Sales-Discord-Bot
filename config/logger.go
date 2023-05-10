@@ -3,10 +3,11 @@ package config
 import (
 	"bytes"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 func CreateServiceLogger(fileName string) *logrus.Logger {

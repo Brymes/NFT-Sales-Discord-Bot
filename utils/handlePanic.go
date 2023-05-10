@@ -2,12 +2,14 @@ package utils
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	log "DIA-NFT-Sales-Bot/debug"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"github.com/olekukonko/tablewriter"
-	"log"
+
 	"runtime/debug"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/olekukonko/tablewriter"
 )
 
 func sendPanicMessage(panicTable [][]string, discordSession *discordgo.Session) {

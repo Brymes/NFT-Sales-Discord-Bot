@@ -1,11 +1,11 @@
 package services
 
 import (
+	log "DIA-NFT-Sales-Bot/debug"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"time"
 )

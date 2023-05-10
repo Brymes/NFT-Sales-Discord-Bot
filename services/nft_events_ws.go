@@ -2,12 +2,14 @@ package services
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	"log"
+
 	"context"
 	"encoding/json"
-	"github.com/gorilla/websocket"
-	"log"
 	"net/url"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type NFTEvent struct {

@@ -3,6 +3,7 @@ package main
 import (
 	"DIA-NFT-Sales-Bot/bot"
 	"DIA-NFT-Sales-Bot/config"
+	"DIA-NFT-Sales-Bot/debug"
 	"DIA-NFT-Sales-Bot/models"
 	"DIA-NFT-Sales-Bot/services"
 	"DIA-NFT-Sales-Bot/utils"
@@ -13,6 +14,7 @@ import (
 )
 
 func init() {
+	debug.DbgInit()
 	config.InitPanicChannel()
 	config.InitDb()
 	models.InitMigrations()
