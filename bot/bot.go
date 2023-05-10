@@ -2,9 +2,10 @@ package bot
 
 import (
 	"DIA-NFT-Sales-Bot/config"
-	"github.com/bwmarrin/discordgo"
-	"log"
+	log "DIA-NFT-Sales-Bot/debug"
 	"os"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func InitBot() {

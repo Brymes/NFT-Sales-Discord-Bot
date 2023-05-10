@@ -1,8 +1,9 @@
 package bot
 
 import (
+	log "DIA-NFT-Sales-Bot/debug"
+
 	"github.com/bwmarrin/discordgo"
-	"log"
 )
 
 var (
@@ -55,6 +56,19 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		}, {
 			Name:        "last_trades",
 			Description: "Returns recent trades for previously set collections through set_up_info_bot",
+		},
+		{
+			Name:        "change_bot_avatar",
+			Description: "SetUp bot avatar to selected image",
+			Options: []*discordgo.ApplicationCommandOption{
+
+				{
+					Type:        discordgo.ApplicationCommandOptionAttachment,
+					Name:        "image",
+					Description: "New avatar to set",
+					Required:    true,
+				},
+			},
 		},
 		{
 			Name:        "set_up_info_bot",
@@ -208,7 +222,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Required:    false,
 				},
 				{
-					Type:         discordgo.ApplicationCommandOptionChannel,
+					Type:         discordgo.ApplicationCommandOptionUser,
 					Name:         "channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
