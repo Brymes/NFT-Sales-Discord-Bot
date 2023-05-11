@@ -26,6 +26,7 @@ var (
 		{"/stop_subscription", "Returns modal to select commands to stop"},
 		{"/track_floor_price", "Live Update of Floor Price to Username"},
 		{"/change_bot_avatar", "Change Avatar for Price Bot"},
+		{"/set_tracker_currency", "Change Currency Display for Price Bot"},
 	}
 )
 
