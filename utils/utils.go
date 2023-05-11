@@ -1,7 +1,9 @@
 package utils
 
 import (
+	log "DIA-NFT-Sales-Bot/debug"
 	"fmt"
+
 	"math"
 	"strings"
 )
@@ -73,4 +75,10 @@ func RemoveArrayDuplicates(arr []string) []string {
 
 func CreateHyperLink(text, url string) string {
 	return fmt.Sprintf("[%s](%s)", text, url)
+}
+
+func OnErrorPanic(err error, helpText string) {
+	if err != nil {
+		log.Panicf("%s: \n, %v", helpText, err)
+	}
 }

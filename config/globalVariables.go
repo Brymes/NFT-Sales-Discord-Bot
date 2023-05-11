@@ -9,7 +9,8 @@ import (
 )
 
 var (
-	DBClient *gorm.DB
+	TrackerCurrency = "ETH"
+	DBClient        *gorm.DB
 
 	DiscordBot *discordgo.Session
 

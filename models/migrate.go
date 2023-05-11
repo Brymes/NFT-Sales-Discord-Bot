@@ -18,6 +18,8 @@ func InitMigrations() {
 
 func LoadCurrentSubscriptions() bool {
 	subscriptions := Subscriptions{}.LoadAllSubscriptions()
+	cm := ConfigModel{}
+	cm.GetConfig()
 	res := false
 
 	for _, subscription := range subscriptions {

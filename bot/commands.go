@@ -32,6 +32,21 @@ var (
 			Value: "Solana",
 		},
 	}
+	BlockChainChoices1 = []*discordgo.ApplicationCommandOptionChoice{
+		{
+			Name:  "Ethereum",
+			Value: "Ethereum",
+		},
+	}
+	CurrencyChoices = []*discordgo.ApplicationCommandOptionChoice{
+		{
+			Name:  "US Dollar",
+			Value: "USD",
+		}, {
+			Name:  "Ethereum",
+			Value: "ETH",
+		},
+	}
 )
 
 func RegisterCommands(discordSession *discordgo.Session) {
@@ -66,6 +81,19 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Type:        discordgo.ApplicationCommandOptionAttachment,
 					Name:        "image",
 					Description: "New avatar to set",
+					Required:    true,
+				},
+			},
+		}, {
+			Name:        "set_tracker_currency",
+			Description: "Set bot floor price tracker currency",
+			Options: []*discordgo.ApplicationCommandOption{
+
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "currency",
+					Description: "New currency to set",
+					Choices:     CurrencyChoices,
 					Required:    true,
 				},
 			},
@@ -246,7 +274,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
-					Choices:     BlockChainChoices,
+					Choices:     BlockChainChoices1,
 					Required:    true,
 				},
 			},
