@@ -18,6 +18,7 @@ func (cm *ConfigModel) GetConfig() {
 
 func (cm *ConfigModel) SaveConfig() {
 	result := config.DBClient.Model(&ConfigModel{}).Create(cm)
+	config.TrackerCurrency = cm.TrackerCurrency
 
 	if result.Error != nil {
 		err := "Error Saving Config Model: \n" + result.Error.Error()

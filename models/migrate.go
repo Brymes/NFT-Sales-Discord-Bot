@@ -9,7 +9,7 @@ import (
 )
 
 func InitMigrations() {
-	err := config.DBClient.AutoMigrate(&Subscriptions{})
+	err := config.DBClient.AutoMigrate(&Subscriptions{}, &ConfigModel{})
 	if err != nil {
 		log.Println("Error performing Database Migrations")
 		log.Fatalln(err)

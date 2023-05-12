@@ -25,6 +25,7 @@ func SetCurrencyHandler(discordSession *discordgo.Session, interaction *discordg
 		panic(err)
 	}
 
+	_ = discordSession.GuildMemberNickname(interaction.GuildID, "@me", "DIA Sales Tracker")
 	config.TrackerCurrency = currency
 	cm := models.ConfigModel{TrackerCurrency: currency}
 	cm.SaveConfig()
