@@ -8,7 +8,7 @@ import (
 )
 
 func TrackFloorPrices() {
-	ticker := time.NewTicker(20 * time.Second)
+	ticker := time.NewTicker(120 * time.Second)
 
 	for {
 		select {
@@ -31,15 +31,22 @@ func TrackFloorPrices() {
 }
 
 func setCurrency(rounded float64, collection string) (updated string) {
-	//Get Price for WETH to USD
-	if config.TrackerCurrency == "USD" {
-		wethPrice := GetAssetQuote("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", "Ethereum")
 
-		rounded = math.Round(rounded*wethPrice.Price*10) / 10
+	switch config.FloorPriceTrackerChain {
+
+	case "Ethereum":
+		updated = fmt.Sprintf("%v %s %s", rounded, "ETH", collection)
+	case "Astar":
+		updated = fmt.Sprintf("%v %s %s", rounded, "ASTR", collection)
+
+	}
+
+	if config.TrackerCurrency == "USD" {
+
+		token := GetAssetQuote("0x0000000000000000000000000000000000000000", config.FloorPriceTrackerChain)
+		rounded = math.Round(rounded * token.Price)
 
 		updated = fmt.Sprintf("%s %v %s", "$", rounded, collection)
-	} else {
-		updated = fmt.Sprintf("%v %s %s", rounded, "ETH", collection)
 	}
 	return
 }

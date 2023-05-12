@@ -32,14 +32,11 @@ var (
 			Value: "Solana",
 		},
 	}
-	BlockChainChoices1 = []*discordgo.ApplicationCommandOptionChoice{
-		{
-			Name:  "Ethereum",
-			Value: "Ethereum",
-		},
-	}
 	CurrencyChoices = []*discordgo.ApplicationCommandOptionChoice{
 		{
+			Name:  "Astar",
+			Value: "ASTR",
+		}, {
 			Name:  "US Dollar",
 			Value: "USD",
 		}, {
@@ -274,7 +271,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "blockchain",
 					Description: "Kindly Select from Astar, Ethereum or Solana",
-					Choices:     BlockChainChoices1,
+					Choices:     BlockChainChoices[:2],
 					Required:    true,
 				},
 			},
