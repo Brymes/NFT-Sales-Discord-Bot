@@ -3,8 +3,7 @@ package utils
 import (
 	log "DIA-NFT-Sales-Bot/debug"
 	"fmt"
-
-	"math"
+	"math/big"
 	"strings"
 )
 
@@ -20,10 +19,16 @@ var BaseAstarURL = map[string]string{
 	"address":     "https://astar.subscan.io/account",
 	"transaction": "https://astar.subscan.io/extrinsic",
 }
+
+var BaseBinanceURL = map[string]string{
+	"address":     "https://bscscan.com/address",
+	"transaction": "https://bscscan.com/tx",
+}
 var ChainURLMap = map[string]map[string]string{
 	"ethereum": BaseEtherScanURL,
 	"astar":    BaseAstarURL,
 	"solana":   BaseSolanaURL,
+	"binance":  BaseBinanceURL,
 }
 
 func GetScanLink(linkType, payload, blockchain string) string {
@@ -34,10 +39,12 @@ func GetScanLink(linkType, payload, blockchain string) string {
 }
 
 var BaseMarketPlaceURL = map[string]string{
-	"opensea":   "https://opensea.io/assets/ethereum",
-	"looksrare": "https://looksrare.org/collections",
-	"x2y2":      "https://x2y2.io/eth",
-	"magiceden": "https://explorer.solana.com/address",
+	"opensea":                   "https://opensea.io/assets/ethereum",
+	"looksrare":                 "https://looksrare.org/collections",
+	"x2y2":                      "https://x2y2.io/eth",
+	"magiceden":                 "https://explorer.solana.com/address",
+	"TofuNFT-Astar":             "https://tofunft.com/nft/astar/",
+	"TofuNFT-BinanceSmartChain": "https://tofunft.com/nft/bsc/",
 }
 
 func GetMarketPlaceLink(marketPlace, collectionAddress, tokenID string) string {
@@ -48,10 +55,22 @@ func GetMarketPlaceLink(marketPlace, collectionAddress, tokenID string) string {
 	return ""
 }
 
-func ConvertDecimalsToCurrency(price int64, decimals int) float64 {
-	res := math.Pow(10, float64(decimals))
-	priceInEth := float64(price) / res
-	return priceInEth
+func ConvertDecimalsToCurrency(price int64, decimals int64) *big.Float {
+	res := big.NewInt(0)
+	fl := big.NewFloat(0)
+
+	// res, isok := res.SetString(decimals, 10)
+	// if !isok {
+	// 	fmt.Printf("error in exp price %s and decimals %s \n", price, decimals)
+	// 	return res
+	// }
+
+	res = res.Exp(big.NewInt(10), big.NewInt(decimals), nil)
+
+	resfl, _ := fl.SetString(res.String())
+
+	pricebig := fl.Quo(big.NewFloat(float64(price)), resfl)
+	return pricebig
 }
 
 func RemoveArrayDuplicates(arr []string) []string {

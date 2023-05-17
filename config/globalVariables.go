@@ -2,10 +2,12 @@ package config
 
 import (
 	"context"
-	"github.com/bwmarrin/discordgo"
-	"gorm.io/gorm"
+	"math/big"
 	"os"
 	"sync"
+
+	"github.com/bwmarrin/discordgo"
+	"gorm.io/gorm"
 )
 
 var (
@@ -19,8 +21,8 @@ var (
 	ActiveSalesMux = &sync.Mutex{}
 
 	// ActiveAllSales Maps Threshold to A List of Channels
-	ActiveAllSales     = map[float64]map[string][]string{}
-	ActiveAllSalesKeys []float64
+	ActiveAllSales     = map[*big.Float]map[string][]string{}
+	ActiveAllSalesKeys []*big.Float
 	ActiveAllSalesMux  = &sync.Mutex{}
 
 	ActiveNftEventWS     = false
@@ -37,7 +39,7 @@ var (
 	FloorPriceTrackerGuild   string
 
 	MessageFooter = discordgo.MessageEmbedFooter{
-		Text:    "Powered by DIA DATA",
+		Text:    "Powered by DIAdata.org",
 		IconURL: "https://www.diadata.org",
 	}
 )

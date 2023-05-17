@@ -4,7 +4,7 @@
     <strong>
         A simple discord bot for tracking sales from specific NFT collections as well as tracking sales via Thresholds and other utility information
     </strong><br><br>
-    <a href="https://bit.ly/3rDTqSW"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="45" /></a>
+    <a href="http://bit.ly/3EmFRgE"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="45" /></a>
 <br>
 </div>
 
@@ -15,10 +15,6 @@
 # Intro
 
 A simple Discord bot for fetching useful information about NFTs powered by [**DIA**](https://www.diadata.org).
-
-### Github
-
-https://github.com/Brymes/NFT-Sales-Discord-Bot
 
 ---
 
@@ -49,7 +45,7 @@ Slash Commands
 
 Click this button the bot to your Server
 
-<a href="https://bit.ly/3rDTqSW"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="35" /></a>
+<a href="http://bit.ly/3EmFRgE"><img src="https://img.shields.io/badge/%20-INVITE%20BOT-7F00FF.svg?style=for-the-badge&logo=discord" height="35" /></a>
 
 # Docker
 
@@ -77,5 +73,5 @@ sudo docker run -d -t -i --name my-nft-sales-tracker -it --net=host \
 -e DB_DATABASE="<YOUR_DB_DATABASE>" \
 -e DB_PORT="<YOUR_DB_PORT>" \
 -e PANIC_CHANNEL="<YOUR_PANIC_CHANNEL_ID>" \
-brymes/discord-nft-sales-tracker:stable 
+diadata/discord-nft-sales-tracker:stable 
 ```

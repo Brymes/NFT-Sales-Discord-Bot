@@ -15,7 +15,7 @@ import (
 func FloorHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
 	optionsMap := ParseCommandOptions(interaction)
 
-	address, blockchain := optionsMap["address"].StringValue(), optionsMap["blockchain"].StringValue()
+	address, blockchain := optionsMap["collection_address"].StringValue(), optionsMap["blockchain"].StringValue()
 
 	//Respond Channel is being Setup
 	message := fmt.Sprintf("Get Floor Price for Collection: %s ", utils.CreateHyperLink(address, utils.GetScanLink("address", address, blockchain)))

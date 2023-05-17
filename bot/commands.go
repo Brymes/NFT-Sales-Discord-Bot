@@ -27,10 +27,11 @@ var (
 		}, {
 			Name:  "Ethereum",
 			Value: "Ethereum",
-		}, {
-			Name:  "Solana",
-			Value: "Solana",
 		},
+		// {
+		// 	Name:  "Solana",
+		// 	Value: "Solana",
+		// },
 	}
 	CurrencyChoices = []*discordgo.ApplicationCommandOptionChoice{
 		{
@@ -50,7 +51,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 	var commands = []*discordgo.ApplicationCommand{
 		{
 			Name:        "help",
-			Description: "Returns All Commands and their corresponding Descriptions",
+			Description: "Returns All Commands and Descriptions",
 		},
 		{
 			Name:        "subscriptions",
@@ -58,16 +59,16 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 		{
 			Name:        "stop_subscription",
-			Description: "Select what commands/bots kill",
+			Description: "Select which commands/bots kill",
 		}, {
 			Name:        "volume",
-			Description: "Return volume for previously set Collection through set_up_info_bot",
+			Description: "Returns volume information for the predetermined NFT Collection on Info bot",
 		}, {
 			Name:        "floor_price",
-			Description: "Returns floor price for previously set Collection through set_up_info_bot",
+			Description: "Returns floor price information for the predetermined NFT Collection on Info bot",
 		}, {
 			Name:        "last_trades",
-			Description: "Returns recent trades for previously set collections through set_up_info_bot",
+			Description: "Returns last 10 trades information for the predetermined NFT Collection on Info bot",
 		},
 		{
 			Name:        "change_bot_avatar",
@@ -97,7 +98,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 		{
 			Name:        "set_up_info_bot",
-			Description: "SetUp bot to feeds NFT sales for set contract address from DIA NFT WebSocket to selected channel",
+			Description: "Set up bot for volume, floor_price and last_trades information with single command for an collection",
 			Options: []*discordgo.ApplicationCommandOption{
 
 				{
@@ -117,19 +118,19 @@ func RegisterCommands(discordSession *discordgo.Session) {
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "blockchain",
-					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Description: "Select from Astar or Ethereum",
 					Choices:     BlockChainChoices,
 					Required:    true,
 				},
 			},
 		}, {
 			Name:        "sales",
-			Description: "SetUp bot to feeds NFT sales for set contract address from DIA NFT WebSocket to selected channel",
+			Description: "Set up bot that feeds all sales for a selected NFT Collection to the channel of your choice",
 			Options: []*discordgo.ApplicationCommandOption{
 
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "contract_address",
+					Name:        "collection_address",
 					Description: "Contract Address to filter transactions from",
 					Required:    true,
 					MinLength:   &ContractAddressMinLength,
@@ -144,62 +145,62 @@ func RegisterCommands(discordSession *discordgo.Session) {
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "blockchain",
-					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Description: "Select from Astar or Ethereum",
 					Choices:     BlockChainChoices,
 					Required:    true,
 				},
 			},
 		},
-		{
-			Name:        "sales_stop",
-			Description: "Stops Bot from pushing sales update from a contract address or stop all bots",
-			Options: []*discordgo.ApplicationCommandOption{
-				{
-					Type:        discordgo.ApplicationCommandOptionBoolean,
-					Name:        "all",
-					Description: "Select True to stop all sales bots",
-					Required:    true,
-				},
-				{
-					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "address",
-					Description: "Contract Address to filter transactions from",
-					Required:    false,
-					MinLength:   &ContractAddressMinLength,
-				},
-				{
-					Type:         discordgo.ApplicationCommandOptionChannel,
-					Name:         "channel",
-					Description:  "Channel to stop updating",
-					ChannelTypes: TextChannelType,
-					Required:     false,
-				},
-			},
-		},
-		{
-			Name:        "floor",
-			Description: "Return floor price of the provided NFT collection contract address",
-			Options: []*discordgo.ApplicationCommandOption{
+		/*		 		{
+				 			Name:        "sales_stop",
+				 			Description: "Stops Bot from pushing sales update from a contract address or stop all bots",
+				 			Options: []*discordgo.ApplicationCommandOption{
+				 				{
+				 					Type:        discordgo.ApplicationCommandOptionBoolean,
+				 					Name:        "all",
+				 					Description: "Select True to stop all sales bots",
+				 					Required:    true,
+				 				},
+				 				{
+				 					Type:        discordgo.ApplicationCommandOptionString,
+				 					Name:        "address",
+				 					Description: "Contract Address to filter transactions from",
+				 					Required:    false,
+				 					MinLength:   &ContractAddressMinLength,
+				 				},
+				 				{
+				 					Type:         discordgo.ApplicationCommandOptionChannel,
+				 					Name:         "channel",
+				 					Description:  "Channel to stop updating",
+				 					ChannelTypes: TextChannelType,
+				 					Required:     false,
+				 				},
+				 			},
+				 		},
+				 		{
+				 			Name:        "floor",
+				 			Description: "Get floor price for any NFT collection",
+				 			Options: []*discordgo.ApplicationCommandOption{
 
-				{
-					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "address",
-					Description: "Contract Address to retrieve floor price",
-					Required:    true,
-					MinLength:   &ContractAddressMinLength,
-				},
-				{
-					Type:        discordgo.ApplicationCommandOptionString,
-					Name:        "blockchain",
-					Description: "Kindly Select from Astar, Ethereum or Solana",
-					Choices:     BlockChainChoices,
-					Required:    true,
-				},
-			},
-		},
+				 				{
+				 					Type:        discordgo.ApplicationCommandOptionString,
+				 					Name:        "collection_address",
+				 					Description: "Contract Address to retrieve floor price",
+				 					Required:    true,
+				 					MinLength:   &ContractAddressMinLength,
+				 				},
+				 				{
+				 					Type:        discordgo.ApplicationCommandOptionString,
+				 					Name:        "blockchain",
+				 					Description: "Select from Astar or Ethereum",
+				 					Choices:     BlockChainChoices,
+				 					Required:    true,
+				 				},
+				 			},
+				 		},*/
 		{
 			Name:        "all_sales",
-			Description: "Return all sales above the predetermined threshold",
+			Description: "Set up bot that feeds all NFT sales above the predetermined threshold",
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Type:        discordgo.ApplicationCommandOptionNumber,
@@ -217,13 +218,13 @@ func RegisterCommands(discordSession *discordgo.Session) {
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "blockchain",
-					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Description: "Select from Astar or Ethereum",
 					Choices:     BlockChainChoices,
 					Required:    true,
 				},
 			},
 		},
-		{
+		/*	{
 			Name:        "all_sales_stop",
 			Description: "Stop bot for all sales above the predetermined threshold and contract address",
 			Options: []*discordgo.ApplicationCommandOption{
@@ -236,7 +237,7 @@ func RegisterCommands(discordSession *discordgo.Session) {
 				{
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "blockchain",
-					Description: "Kindly Select from Astar, Ethereum or Solana",
+					Description: "Select from Astar or Ethereum",
 					Choices:     BlockChainChoices,
 					Required:    true,
 				},
@@ -247,14 +248,14 @@ func RegisterCommands(discordSession *discordgo.Session) {
 					Required:    false,
 				},
 				{
-					Type:         discordgo.ApplicationCommandOptionUser,
+					Type:         discordgo.ApplicationCommandOptionChannel,
 					Name:         "channel",
 					Description:  "Channel to push information of matching transactions to.",
 					ChannelTypes: TextChannelType,
 					Required:     false,
 				},
 			},
-		},
+		},*/
 		{
 			Name:        "track_floor_price",
 			Description: "Track Floor Price of specified collection and update Bot username periodically",
@@ -293,22 +294,25 @@ func RegisterCommands(discordSession *discordgo.Session) {
 
 	log.Println("Adding commands...")
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
+
 	for index, command := range commands {
 		cmd, err := discordSession.ApplicationCommandCreate(discordSession.State.User.ID, "", command)
 		if err != nil {
 			log.Fatalf("Cannot create '%v' command: %v", command.Name, err)
 		}
 		registeredCommands[index] = cmd
+		log.Println("Adding command", cmd.Name)
+
 	}
 	RegisteredCommands = registeredCommands
 }
 
 func DeRegisterCommands(discordSession *discordgo.Session) {
 	log.Println("Removing commands...")
-	// // We need to fetch the commands, since deleting requires the command ID.
-	// // We are doing this from the returned commands on line 375, because using
-	// // this will delete all the commands, which might not be desirable, so we
-	// // are deleting only the commands that we added.
+	// We need to fetch the commands, since deleting requires the command ID.
+	// We are doing this from the returned commands on line 375, because using
+	// this will delete all the commands, which might not be desirable, so we
+	// are deleting only the commands that we added.
 	// registeredCommands, err := s.ApplicationCommands(s.State.User.ID, *GuildID)
 	// if err != nil {
 	// 	log.Fatalf("Could not fetch registered commands: %v", err)

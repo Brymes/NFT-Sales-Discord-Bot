@@ -7,9 +7,12 @@ import (
 	"DIA-NFT-Sales-Bot/utils"
 	"database/sql"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
+	"math/big"
 	"sort"
+	"strconv"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.InteractionCreate) {
@@ -40,17 +43,20 @@ func AllSalesHandler(discordSession *discordgo.Session, interaction *discordgo.I
 		Command:    "all_sales",
 		Blockchain: blockchain,
 		ChannelID:  sql.NullString{String: channel.ID, Valid: true},
-		Threshold:  threshold,
+		Threshold:  sql.NullString{String: strconv.FormatFloat(threshold, 'g', 5, 64), Valid: true},
 		Active:     true,
 	}.SaveSubscription()
 
-	addDetailsToMap(threshold, channel.ID, blockchain)
+	thresholdbigint := big.NewFloat(0)
+	thresholdbigint = thresholdbigint.SetFloat64(threshold)
+
+	addDetailsToMap(thresholdbigint, channel.ID, blockchain)
 
 	//Follow Up has been Set up
 	SendChannelSetupFollowUp("Channel setup complete & successful", discordSession, interaction)
 }
 
-func addDetailsToMap(threshold float64, channelID string, blockchain string) {
+func addDetailsToMap(threshold *big.Float, channelID string, blockchain string) {
 
 	//Add Details to AllSales[ChannelID]
 	config.ActiveAllSalesMux.Lock()
@@ -64,13 +70,16 @@ func addDetailsToMap(threshold float64, channelID string, blockchain string) {
 	data[blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
 	config.ActiveAllSales[threshold] = data
 
-	config.ActiveAllSalesKeys = make([]float64, 0, len(subscribedChannels))
+	config.ActiveAllSalesKeys = make([]*big.Float, 0, len(subscribedChannels))
 
 	for k := range config.ActiveAllSales {
 		config.ActiveAllSalesKeys = append(config.ActiveAllSalesKeys, k)
 	}
 
-	sort.Float64s(config.ActiveAllSalesKeys)
+	// sort.Float64s(config.ActiveAllSalesKeys)
+	sort.Slice(config.ActiveAllSalesKeys, func(a, b int) bool {
+		return config.ActiveAllSalesKeys[a].Cmp(config.ActiveAllSalesKeys[b]) > 0
+	})
 
 	defer config.ActiveAllSalesMux.Unlock()
 }

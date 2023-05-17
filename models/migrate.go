@@ -4,6 +4,7 @@ import (
 	"DIA-NFT-Sales-Bot/config"
 	log "DIA-NFT-Sales-Bot/debug"
 	"DIA-NFT-Sales-Bot/utils"
+	"math/big"
 	"sort"
 	"strings"
 )
@@ -43,24 +44,30 @@ func LoadCurrentSubscriptions() bool {
 			res = true
 
 			config.ActiveAllSalesMux.Lock()
+			threshold := big.NewFloat(0)
+			threshold, _ = threshold.SetString(subscription.Threshold.String)
 
-			subscribedChannels := config.ActiveAllSales[subscription.Threshold][subscription.Blockchain]
+			subscribedChannels := config.ActiveAllSales[threshold][subscription.Blockchain]
 			subscribedChannels = append(subscribedChannels, subscription.ChannelID.String)
 
-			data := config.ActiveAllSales[subscription.Threshold]
+			data := config.ActiveAllSales[threshold]
 			if len(data) == 0 {
 				data = map[string][]string{}
 			}
 			data[subscription.Blockchain] = utils.RemoveArrayDuplicates(subscribedChannels)
-			config.ActiveAllSales[subscription.Threshold] = data
+			config.ActiveAllSales[threshold] = data
 
-			config.ActiveAllSalesKeys = make([]float64, 0, len(subscribedChannels))
+			config.ActiveAllSalesKeys = make([]*big.Float, 0, len(subscribedChannels))
 
 			for k := range config.ActiveAllSales {
 				config.ActiveAllSalesKeys = append(config.ActiveAllSalesKeys, k)
 			}
 
-			sort.Float64s(config.ActiveAllSalesKeys)
+			// sort.Float64s(config.ActiveAllSalesKeys)
+
+			sort.Slice(config.ActiveAllSalesKeys, func(a, b int) bool {
+				return config.ActiveAllSalesKeys[a].Cmp(config.ActiveAllSalesKeys[b]) > 0
+			})
 
 			config.ActiveAllSalesMux.Unlock()
 

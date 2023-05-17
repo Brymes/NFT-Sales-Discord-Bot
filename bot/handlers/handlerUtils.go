@@ -6,8 +6,8 @@ import (
 
 var currencies = map[string]string{
 	"ethereum": "ETH",
-	"astar":    "SOL",
-	"solana":   "ASTR",
+	"astar":    "ASTR",
+	"solana":   "SOL",
 }
 
 func ParseCommandOptions(interaction *discordgo.InteractionCreate) map[string]*discordgo.ApplicationCommandInteractionDataOption {

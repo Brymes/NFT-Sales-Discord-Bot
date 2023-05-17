@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"DIA-NFT-Sales-Bot/models"
-	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
 
 	"github.com/olekukonko/tablewriter"
 )
@@ -46,7 +46,7 @@ func SubscriptionsHandler(discordSession *discordgo.Session, interaction *discor
 		case "sales":
 			row = []string{subscription.Command, subscription.ChannelID.String, "", subscription.Address.String}
 		case "all_sales":
-			row = []string{subscription.Command, subscription.ChannelID.String, fmt.Sprintf("%f", subscription.Threshold), ""}
+			row = []string{subscription.Command, subscription.ChannelID.String, subscription.Threshold.String, ""}
 		}
 
 		subsArray = append(subsArray, row)
