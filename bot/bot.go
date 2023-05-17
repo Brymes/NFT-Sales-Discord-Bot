@@ -10,7 +10,7 @@ import (
 
 func InitBot() {
 	token := os.Getenv("DISCORD_BOT_TOKEN")
-	token = "MTAxOTI3MDc1ODE4ODQ1ODA4NQ.GrmnqE._4fMGh82Dux7vpoHT5A7VxwbbMZmcpJrciFvgA"
+
 	if token == "" {
 		log.Log.Fatalln("DISCORD_BOT_TOKEN environment variable not set")
 	}
