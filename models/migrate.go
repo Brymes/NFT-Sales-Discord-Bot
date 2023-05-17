@@ -12,8 +12,8 @@ import (
 func InitMigrations() {
 	err := config.DBClient.AutoMigrate(&Subscriptions{}, &ConfigModel{})
 	if err != nil {
-		log.Println("Error performing Database Migrations")
-		log.Fatalln(err)
+		log.Log.Println("Error performing Database Migrations")
+		log.Log.Fatalln(err)
 	}
 }
 

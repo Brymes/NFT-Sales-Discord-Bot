@@ -4,6 +4,8 @@ import (
 	"DIA-NFT-Sales-Bot/config"
 	"log"
 
+	log1 "DIA-NFT-Sales-Bot/debug"
+
 	"context"
 	"encoding/json"
 	"net/url"
@@ -77,7 +79,7 @@ func ConnectToService(logger *log.Logger) {
 		for {
 			select {
 			case <-ctx2.Done():
-				log.Println("Websocket stopped")
+				log1.Log.Println("Websocket stopped")
 				return
 			default:
 				event, jsonPayload := NFTEvent{}, map[string]interface{}{}
@@ -122,7 +124,7 @@ func ConnectToService(logger *log.Logger) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Websocket stopped")
+			log1.Log.Println("Websocket stopped")
 			config.ActiveNftEventWS = false
 			return
 		case <-done:

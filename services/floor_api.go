@@ -86,14 +86,14 @@ func MakeRequest(url string) (io.ReadCloser, []byte) {
 	req, err := http.NewRequest(method, url, nil)
 
 	if err != nil {
-		log.Println(err)
+		log.Log.Println(err)
 		errorRes = errors.New("Error whilst setting up Communication with Floor Price API" + err.Error())
 		panic(errorRes)
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		log.Println(err)
+		log.Log.Println(err)
 		errorRes = errors.New("Error Communicating with Floor Price API" + err.Error())
 		panic(errorRes)
 	}
@@ -102,7 +102,7 @@ func MakeRequest(url string) (io.ReadCloser, []byte) {
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		log.Println(err)
+		log.Log.Println(err)
 		errorRes = errors.New("Error reading response from Floor Price API" + err.Error())
 		panic(errorRes)
 	}

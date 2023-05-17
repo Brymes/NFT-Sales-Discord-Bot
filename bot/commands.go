@@ -292,36 +292,36 @@ func RegisterCommands(discordSession *discordgo.Session) {
 		},
 	}
 
-	log.Println("Adding commands...")
+	log.Log.Println("Adding commands...")
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
 
 	for index, command := range commands {
 		cmd, err := discordSession.ApplicationCommandCreate(discordSession.State.User.ID, "", command)
 		if err != nil {
-			log.Fatalf("Cannot create '%v' command: %v", command.Name, err)
+			log.Log.Fatalf("Cannot create '%v' command: %v", command.Name, err)
 		}
 		registeredCommands[index] = cmd
-		log.Println("Adding command", cmd.Name)
+		log.Log.Println("Adding command", cmd.Name)
 
 	}
 	RegisteredCommands = registeredCommands
 }
 
 func DeRegisterCommands(discordSession *discordgo.Session) {
-	log.Println("Removing commands...")
+	log.Log.Println("Removing commands...")
 	// We need to fetch the commands, since deleting requires the command ID.
 	// We are doing this from the returned commands on line 375, because using
 	// this will delete all the commands, which might not be desirable, so we
 	// are deleting only the commands that we added.
 	// registeredCommands, err := s.ApplicationCommands(s.State.User.ID, *GuildID)
 	// if err != nil {
-	// 	log.Fatalf("Could not fetch registered commands: %v", err)
+	// 	log.Log.Fatalf("Could not fetch registered commands: %v", err)
 	// }
 
 	for _, command := range RegisteredCommands {
 		err := discordSession.ApplicationCommandDelete(discordSession.State.User.ID, "", command.ID)
 		if err != nil {
-			log.Panicf("Cannot delete '%v' command: %v", command.Name, err)
+			log.Log.Panicf("Cannot delete '%v' command: %v", command.Name, err)
 		}
 	}
 }

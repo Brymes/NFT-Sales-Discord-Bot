@@ -98,6 +98,6 @@ func CreateHyperLink(text, url string) string {
 
 func OnErrorPanic(err error, helpText string) {
 	if err != nil {
-		log.Panicf("%s: \n, %v", helpText, err)
+		log.Log.Panicf("%s: \n, %v", helpText, err)
 	}
 }

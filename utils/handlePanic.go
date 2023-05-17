@@ -29,8 +29,8 @@ func sendPanicMessage(panicTable [][]string, discordSession *discordgo.Session) 
 
 	_, err := discordSession.ChannelMessageSend(config.PanicChannelID, msg)
 	if err != nil {
-		log.Println(err)
-		log.Println("Error Sending Panic message")
+		log.Log.Println(err)
+		log.Log.Println("Error Sending Panic message")
 	}
 
 }
@@ -43,9 +43,9 @@ func HandlePanic(discordSession *discordgo.Session, customMessage string) {
 	if err := recover(); err != nil {
 		stack := string(debug.Stack())
 
-		log.Println(err)
-		log.Println(customMessage)
-		log.Println(stack)
+		log.Log.Println(err)
+		log.Log.Println(customMessage)
+		log.Log.Println(stack)
 
 		msg = append(msg, []string{"Error", fmt.Sprintf("%v", err)})
 		msg = append(msg, []string{"Call Stack", stack})

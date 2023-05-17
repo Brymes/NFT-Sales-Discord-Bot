@@ -3,7 +3,6 @@ package config
 import (
 	log "DIA-NFT-Sales-Bot/debug"
 	"fmt"
-	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -11,17 +10,23 @@ import (
 
 func InitDb() {
 	var err error
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USERNAME"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_DATABASE"),
-		os.Getenv("DB_PORT"),
+	host := "dia.ep-fragrant-limit-541358.us-east-2.aws.neon.tech"
+	port := "5432"
+	dbname := "neondb"
+	user := "Brymes"
+	password := "va2pVxqIodY5"
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=require options=project=ep-fragrant-limit-541358",
+		host,
+		user,
+		password,
+		dbname,
+		port,
 	)
+
 	DBClient, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Println("Error Connecting to Database. Kindly set accurate Database environment variables")
-		log.Fatal(err)
+		log.Log.Println("Error Connecting to Database. Kindly set accurate Database environment variables")
+		log.Log.Fatal(err)
 	}
 }
 

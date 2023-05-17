@@ -21,7 +21,7 @@ func StartEventWS() {
 	defer utils.HandlePanic(config.DiscordBot, "Error from Websocket")
 
 	// Use Cancel Func to kill this
-	log.Println("Websocket Service running")
+	log.Log.Println("Websocket Service running")
 	go ConnectToService(logger)
 	return
 }
@@ -144,10 +144,10 @@ func SendSalesMessage(event NFTEvent, channelID string) {
 
 		data, err := json.Marshal(embed)
 		if err != nil {
-			log.Printf("data Marshal err, %v", err)
+			log.Log.Printf("data Marshal err, %v", err)
 		}
-		log.Printf("data %s", data)
-		log.Printf("error sending message to channel %s, %v", channelID, err)
+		log.Log.Printf("data %s", data)
+		log.Log.Printf("error sending message to channel %s, %v", channelID, err)
 	}
 
 }
@@ -179,7 +179,7 @@ func parseAstarSalesMessage(event NFTEvent) (price, txHash, buyersAddress, selle
 	return
 }
 
-func parseBinanceSalesMessage(event NFTEvent) (price, txHash, buyersAddress, sellerAddress string) {
+/*func parseBinanceSalesMessage(event NFTEvent) (price, txHash, buyersAddress, sellerAddress string) {
 	eventResponse := event.Response
 	sellerAddress = utils.GetScanLink("address", eventResponse.FromAddress, "astar")
 	buyersAddress = utils.GetScanLink("address", eventResponse.ToAddress, "astar")
@@ -187,3 +187,4 @@ func parseBinanceSalesMessage(event NFTEvent) (price, txHash, buyersAddress, sel
 	txHash = utils.GetScanLink("transaction", eventResponse.TxHash, "astar")
 	return
 }
+*/
