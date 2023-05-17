@@ -2,10 +2,10 @@ package services
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	log "DIA-NFT-Sales-Bot/debug"
 	"DIA-NFT-Sales-Bot/utils"
 	"encoding/json"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 

@@ -2,15 +2,15 @@ package models
 
 import (
 	"DIA-NFT-Sales-Bot/config"
+	log "DIA-NFT-Sales-Bot/debug"
 	"DIA-NFT-Sales-Bot/utils"
-	"log"
 	"math/big"
 	"sort"
 	"strings"
 )
 
 func InitMigrations() {
-	err := config.DBClient.AutoMigrate(&Subscriptions{})
+	err := config.DBClient.AutoMigrate(&Subscriptions{}, &ConfigModel{})
 	if err != nil {
 		log.Println("Error performing Database Migrations")
 		log.Fatalln(err)
@@ -19,6 +19,8 @@ func InitMigrations() {
 
 func LoadCurrentSubscriptions() bool {
 	subscriptions := Subscriptions{}.LoadAllSubscriptions()
+	cm := ConfigModel{}
+	cm.GetConfig()
 	res := false
 
 	for _, subscription := range subscriptions {

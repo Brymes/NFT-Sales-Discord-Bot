@@ -2,12 +2,14 @@ package services
 
 import (
 	"DIA-NFT-Sales-Bot/config"
-	"DIA-NFT-Sales-Bot/utils"
-	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"runtime/debug"
+
+	"DIA-NFT-Sales-Bot/utils"
+	"fmt"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func WSHandlePanic(discordSession *discordgo.Session, customMessage string, logger *log.Logger) {

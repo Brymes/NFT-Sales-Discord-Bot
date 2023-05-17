@@ -11,7 +11,8 @@ import (
 )
 
 var (
-	DBClient *gorm.DB
+	TrackerCurrency = "ETH"
+	DBClient        *gorm.DB
 
 	DiscordBot *discordgo.Session
 
@@ -52,7 +53,7 @@ func ShutDownWS() {
 func InitPanicChannel() {
 	channel := os.Getenv("PANIC_CHANNEL")
 
-	PanicChannelID = "1062067299663761428"
+	PanicChannelID = "1106614666425270323"
 	if channel == "" {
 	} else {
 		PanicChannelID = channel
