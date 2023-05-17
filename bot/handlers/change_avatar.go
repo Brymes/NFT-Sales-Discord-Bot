@@ -35,7 +35,7 @@ func ChangeBotAvatarHandler(discordSession *discordgo.Session, interaction *disc
 	resp, err := http.DefaultClient.Get(imageUrl)
 
 	if err != nil {
-		log.Println(errors.New("could not get response from code explain bot"))
+		log.Log.Println(errors.New("could not get response from code explain bot"))
 		err = discordSession.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
@@ -54,7 +54,7 @@ func ChangeBotAvatarHandler(discordSession *discordgo.Session, interaction *disc
 
 	img, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("Error reading the response, ", err)
+		log.Log.Println("Error reading the response, ", err)
 		return
 	}
 
@@ -65,7 +65,7 @@ func ChangeBotAvatarHandler(discordSession *discordgo.Session, interaction *disc
 	avatar := fmt.Sprintf("data:%s;base64,%s", contentType, base64img)
 	_, err = discordSession.UserUpdate("", avatar)
 	if err != nil {
-		log.Println(err)
+		log.Log.Println(err)
 	}
 
 	SendChannelSetupFollowUp("Avatar Successfully changed", discordSession, interaction)

@@ -21,14 +21,14 @@ func WSHandlePanic(discordSession *discordgo.Session, customMessage string, logg
 	if err := recover(); err != nil {
 		stack := string(debug.Stack())
 
-		log.Println(err)
-		log.Println(customMessage)
-		log.Println(stack)
+		logger.Println(err)
+		logger.Println(customMessage)
+		logger.Println(stack)
 
 		msg = append(msg, []string{"Error", fmt.Sprintf("%v", err)})
 		msg = append(msg, []string{"Call Stack", stack})
 
-		log.Println("restarting Connection")
+		logger.Println("restarting Connection")
 		config.ShutDownWS()
 		time.Sleep(5 * time.Second)
 		go ConnectToService(logger)

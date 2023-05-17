@@ -2,61 +2,32 @@ package debug
 
 import (
 	"io"
-	logging "log"
+	"log"
 	"os"
 
 	"github.com/sirupsen/logrus"
 )
 
 var (
-	log *logrus.Logger
+	Log *logrus.Logger
 )
 
 func DbgInit() {
 	f, err := os.OpenFile("application.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 	if err != nil {
-		logging.Fatalf("error opening file: %v", err)
+		log.Fatal("error opening file: %v", err)
 	}
 
-	log = logrus.New()
+	Log = logrus.New()
 
 	//log.Formatter = &logrus.JSONFormatter{}
 
-	log.SetReportCaller(true)
+	Log.SetReportCaller(true)
 
 	mw := io.MultiWriter(os.Stdout, f)
-	log.SetOutput(mw)
-}
 
-// Fatalf ...
-func Fatalf(format string, v ...interface{}) {
-	log.Fatalf(format, v...)
-}
-
-// Fatalln ...
-func Fatalln(v ...interface{}) {
-	log.Fatalln(v...)
-}
-
-// Panicf ...
-func Panicf(format string, v ...interface{}) {
-	log.Panicf(format, v...)
-}
-
-// Printf ...
-func Printf(format string, v ...interface{}) {
-	log.Printf(format, v...)
-}
-
-// Fatal ...
-func Fatal(v ...interface{}) {
-	log.Fatal(v...)
-}
-
-// Println ...
-func Println(v ...interface{}) {
-	log.Println(v...)
+	Log.SetOutput(mw)
 }
 
 var (
