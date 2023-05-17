@@ -3,6 +3,7 @@ package services
 import (
 	"DIA-NFT-Sales-Bot/config"
 	"fmt"
+	"log"
 	"math"
 	"time"
 )
@@ -21,7 +22,7 @@ func TrackFloorPrices() {
 				update := setCurrency(rounded, response.Volume.Collection)
 				err := config.DiscordBot.GuildMemberNickname(config.FloorPriceTrackerGuild, "@me", update)
 				if err != nil {
-					panic(err)
+					log.Println("GuildMemberNickname err", err)
 				}
 			}
 		default:
