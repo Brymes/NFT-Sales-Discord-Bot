@@ -44,6 +44,11 @@ func Panicf(format string, v ...interface{}) {
 	log.Panicf(format, v...)
 }
 
+// Printf ...
+func Printf(format string, v ...interface{}) {
+	log.Printf(format, v...)
+}
+
 // Fatal ...
 func Fatal(v ...interface{}) {
 	log.Fatal(v...)
