@@ -26,6 +26,7 @@ func DbgInit() {
 	Log.SetReportCaller(true)
 
 	mw := io.MultiWriter(os.Stdout, f)
+
 	Log.SetOutput(mw)
 }
 
