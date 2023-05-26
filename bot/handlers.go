@@ -61,7 +61,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			panic(err)
 		}
 	default:
-		handlers.SendHelpText(s, m)
+		// log.Println(m.Content)
+		//handlers.SendHelpText(s, m)
 	}
 }
 
@@ -80,7 +81,7 @@ func centralCommandHandler(discordSession *discordgo.Session, interaction *disco
 		if handler, ok := componentHandlers[interaction.MessageComponentData().CustomID]; ok {
 			handler(discordSession, interaction)
 		} else {
-			SlashCommands["help"](discordSession, interaction)
+			//SlashCommands["help"](discordSession, interaction)
 		}
 	}
 }
